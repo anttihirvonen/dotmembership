@@ -1,2 +1,1 @@
-dotmembership
-=============
+Project dotmembership.
