@@ -1,4 +1,4 @@
-# Commong Django settings. This file contains 
+# Commong Django settings. This file contains
 # settings that are common to different development and
 # production environments. Use settings/local.py for all
 # spesific settings.
@@ -46,9 +46,9 @@ SITE_ID = 1
 
 EMAIL_SUBJECT_PREFIX = "[Dotmembership] "
 
-DEFAULT_FROM_EMAIL = "dot.hallitus@gmail.com""
+DEFAULT_FROM_EMAIL = "dot.hallitus@gmail.com"
 
-SERVER_EMAIL = "dot@kapsi.fi""
+SERVER_EMAIL = "dot@kapsi.fi"
 
 # Formatting settings
 DATE_FORMAT = 'j.n.Y'
