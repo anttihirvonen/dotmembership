@@ -6,19 +6,57 @@
         <title>Digitaalisen median ammattiainekerho DOT - jäsenrekisteri</title>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" >
+<link href='http://fonts.googleapis.com/css?family=Crimson+Text' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Allerta' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" >
 
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css">
     </head>
     <body>
     <div class="container">
-        <div class="row">
-            <div class="span6">
-                <h1>test</h1>
+        <div id="header">
+            <img src="{{ STATIC_URL }}img/dot_eng.png" class="header-logo" />
+        </div>
+        <div id="content">
+            <div class="row">
+                <div class="span12">
+                    <h1>Liity jäseneksi tai tarkasta jäsentietosi</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehicula dignissim pharetra. Nunc ipsum justo, ullamcorper mattis eleifend quis, vulputate elementum est. Nunc sollicitudin, erat quis fringilla volutpat, velit metus tincidunt nisl, in scelerisque est ante in elit. Sed velit nisl, ultrices non tincidunt in, volutpat quis mauris. Vivamus consequat tempus consectetur. Aliquam id ligula nec magna porta congue quis in nisi. Vestibulum tristique odio quis mauris euismod luctus. Etiam eleifend scelerisque dictum. Aenean vulputate bibendum augue aliquet ullamcorper. Nullam posuere, ante at sodales euismod, nunc eros accumsan neque, eleifend luctus justo diam id ligula. Duis nec eleifend lorem. Nulla ultricies malesuada placerat. Maecenas euismod porta ipsum at ornare. Morbi eget lacus orci.
+</p>
+                </div>
             </div>
-            <div class="span6">
-                <h1>test</h1>
+            <div class="row">
+                <div class="span6">
+                    <h2>Uusi jäsen</h2>
+                    <form class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="inputEmail">Email</label>
+                            <div class="controls">
+                                <input type="text" id="inputEmail" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPassword">Password</label>
+                            <div class="controls">
+                                <input type="password" id="inputPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox"> Remember me
+                                </label>
+                                <button type="submit" class="btn">Sign in</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="span6">
+                    <h2>Vanha jäsen</h2>
+                    <h3>Tarkista helposti, oletko jäsen</h3>
+
+                    <h3>Muuta jäsentietojasi</h3>
+                </div>
             </div>
         </div>
     </div>

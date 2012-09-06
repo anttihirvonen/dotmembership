@@ -1,1 +1,48 @@
 /* CSS styles */
+body {
+    background-image: url("../img/background.jpg");
+    background-position: 0px -150px;
+}
+
+.container {
+}
+
+h1 {
+	font-family: 'Allerta', Helvetica, Arial, sans-serif;
+	font-size: 30px;
+	line-height: 55px;
+}
+ 
+p {
+	font-family: 'Crimson Text', Georgia, Times, serif;
+	font-size: 18px;
+	line-height: 25px;
+}
+
+
+[class*="span"] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+#header {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    *zoom: 1;
+}
+
+#header > img {
+    width: 400px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#content {
+    background: rgba(245, 245, 245, 0.8);
+    -webkit-border-radius: 20px;
+}
+
+
