@@ -25,7 +25,7 @@ class Invoice(models.Model):
     amount = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=_(u"summa"))
     # Automatically calculated at post_save based on the id
 
-    reference_number = models.IntegerField(_(u"viitenumero"), blank=True, editable=False)
+    reference_number = models.IntegerField(_(u"viitenumero"), blank=True, null=True, editable=False)
 
 
 @receiver(post_save, sender=Invoice)
@@ -35,5 +35,5 @@ def calculate_reference_number(sender, instance, created, **kwargs):
     """
     if created:
         # One-liner to calculate reference number :)
-        instance.reference_number = instance.id + str(-sum(int(x) * [7, 3, 1][i % 3] for i, x in enumerate(instance.reference_number[::-1])) % 10)
+        instance.reference_number = int(str(instance.id) + str(-sum(int(x) * [7, 3, 1][i % 3] for i, x in enumerate(str(instance.id)[::-1])) % 10))
         instance.save()
