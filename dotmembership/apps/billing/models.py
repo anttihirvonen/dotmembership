@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from model_utils import Choices
 
@@ -19,7 +20,7 @@ class Invoice(models.Model):
 
     PAYMENT = Choices(("cash", _(u"käteinen")), ("bank", _(u"pankki")))
 
-    member = models.ForeignKey(Member, related_name="invoice")
+    member = models.ForeignKey(Member, related_name="invoices")
 
     status = models.CharField(_(u"tila"), choices=STATUS, default=STATUS.created, max_length=15)
 
@@ -40,9 +41,6 @@ class Invoice(models.Model):
 
     def __unicode__(self):
         return "{0}, {1}".format(self.member, self.for_year)
-
-    def clean(self):
-        pass
 
 
 @receiver(post_save, sender=Invoice)
