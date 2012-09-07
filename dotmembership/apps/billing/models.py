@@ -35,5 +35,5 @@ def calculate_reference_number(sender, instance, created, **kwargs):
     """
     if created:
         # One-liner to calculate reference number :)
-        instance.reference_number = instance.id + str(-sum(int(x)*[7,3,1][i%3] for i, x in enumerate(instance.reference_number[::-1])) % 10)
+        instance.reference_number = instance.id + str(-sum(int(x) * [7, 3, 1][i % 3] for i, x in enumerate(instance.reference_number[::-1])) % 10)
         instance.save()
