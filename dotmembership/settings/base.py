@@ -135,7 +135,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'dotmembership.apps.members',
-    'dotmembership.apps.payments',
+    'dotmembership.apps.billing',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
