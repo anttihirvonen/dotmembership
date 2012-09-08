@@ -1,5 +1,10 @@
 from django.contrib import admin
+import reversion
 
 from .models import Member
 
-admin.site.register(Member)
+
+class MemberAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(Member, MemberAdmin)
