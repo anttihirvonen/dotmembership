@@ -5,6 +5,6 @@ from .models import Invoice
 
 
 class InvoiceAdmin(reversion.VersionAdmin):
-    pass
+    readonly_fields = ("reference_number",)
 
 admin.site.register(Invoice, InvoiceAdmin)
