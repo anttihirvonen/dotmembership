@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'dotmembership.apps.members',
     'dotmembership.apps.billing',
     'django.contrib.admin',
+    'reversion'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
