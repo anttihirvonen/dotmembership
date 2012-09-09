@@ -1,6 +1,7 @@
 django==1.4
 django-model-utils==1.1.0
-django-reversion
+django-generic-confirmation==0.3
+django-reversion==1.6.3
 yolk
 south
 
