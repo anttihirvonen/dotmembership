@@ -6,14 +6,14 @@ from model_utils import Choices
 
 
 class Member(models.Model):
-    MEMBERSHIP = Choices(("normal", _(u"normaali")),
+    MEMBERSHIP = Choices(("normal", _(u"varsinainen")),
                          ("support", _(u"kannatus")),
                          ("honorary", _(u"kunnia")))
 
     # The important data
     first_name = models.CharField(_(u"etunimi"), max_length=30)
     last_name = models.CharField(_(u"sukunimi"), max_length=30)
-    email = models.EmailField(_(u"sähköpostiosoite"), help_text=_(u"Syötä toimiva sähköpostiosoite."))
+    email = models.EmailField(_(u"sähköpostiosoite"), help_text=_(u"Syötä toimiva sähköpostiosoite."), unique=True)
     home_town = models.CharField(_(u"kotipaikka"), max_length=32)
 
     # Not-so-important data (nice to know..)
