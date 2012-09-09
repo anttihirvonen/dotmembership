@@ -23,7 +23,7 @@ class Member(models.Model):
                               help_text=_(u"Mikäli olet käynyt/käyt useampia kouluja, merkitse tähän viimeisin."))
     major = models.CharField(_(u"pääaine"), max_length=64, blank=True,
                              help_text=_(u"Edellisessä mainitussa koulussa opiskelemasi pääaine."))
-    class_year = models.IntegerField(_(u"Valmistumisvuosi"), blank=True, null=True,
+    class_year = models.IntegerField(_(u"valmistumisvuosi"), blank=True, null=True,
                                      help_text=_(u"Vuosi, jolloin valmistuit/arvioit valmistuvasi."))
 
     # Membership data
