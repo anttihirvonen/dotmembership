@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load members_extra %}
+{% block title %}Vahvista liittyminen jäseneksi{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% if token_valid %}
+    <div class="span12">
+        {{ member }}
+        <h1>Liittymisesi DOTin jäseneksi on vahvistettu!</h1>
+        <p>Olet nyt käytännössä DOTin jäsen. Sinun täytyy enää maksaa jäsenmaksu altalöytyvien ohjeiden mukaisesti.</p>
+    </div>
+    <div class="clear"></div>
+    <div class="span6">
+        <h2>Liityit jäseneksi seuraavin tiedoin</h2>
+        <table class="table table-bordered table-hover">
+            <tbody>
+                {% for field in fields %}
+                <tr>
+                    <th>
+                        {{ member|getfieldname:field|capfirst }}
+                    </th>
+                    <td>
+                        {{ member|getfield:field }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>Mikäli tiedoissasi on virheitä, voit muuttaa niitä <a href="{% url index %}">etusivun</a> "vanha jäsen"-kohdan kautta.</p>
+    </div>
+    <div class="span6">
+        <h2>Maksa jäsenmaksu</h2>
+        <p>Alla näät maksutiedot
+    </div>
+    {% else %}
+    <div class="span12">
+        <h1>Liittymisen vahvistaminen epäonnistui</h1>
+        <p>Voi harmi – emme pystyneet vahvistamaan liitymistäsi DOTin jäseneksi.</p>
+        <p>Syynä tähän voi olla jokin seuraavista:
+            <ul>
+                <li>Olet jo jäsen. Voit tarkistaa <a href="{% url index %}#old">etusivulta</a> kohdasta "vanha jäsen" jäsenyytesi tilan.</li>
+                <li>Järjestelmässämme on bugi. Mikäli et ole jo jäsen ja sait tämän virheen, ota yhteys ylläpitoon joko irkissä kanavalla #dot@IRCNet, tai
+                lähetä sähköpostia osoitteeseen dot-hallitus@list.ayy.fi</li>
+            </ul>
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

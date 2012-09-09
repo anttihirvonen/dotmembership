@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^$', 'dotmembership.apps.members.views.index', name="index"),
     url(r'^admin/', include(admin.site.urls)),
+    (r"^members/", include("dotmembership.apps.members.urls"))
 )
