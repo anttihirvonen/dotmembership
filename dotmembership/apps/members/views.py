@@ -3,6 +3,8 @@ from django.conf import settings
 
 from generic_confirmation.forms import ConfirmationForm
 
+from ajaxutils.decorators import ajax
+
 from .forms import MemberForm
 
 
@@ -20,6 +22,20 @@ def index(request):
         form = MemberForm()
 
     return render(request, 'index.html', {'member_form': form})
+
+
+@ajax(require_POST=True)
+def join(request):
+    """
+    AJAX view for adding a new member to registry.
+    """
+    form = MemberForm(request.POST)
+
+    if form.is_valid():
+        form.save()
+        return {'status': 'success'}
+
+    return {'status': 'error', 'errors': form.errors}
 
 
 def confirm_join(request, token):
@@ -51,13 +67,6 @@ def confirm_join(request, token):
             return render(request, "members/confirm_join.html", context)
 
     return render(request, "members/confirm_join.html", {"token_valid": False})
-
-
-def join(request):
-    """
-    AJAX view for adding a new member to registry.
-    """
-    pass
 
 
 def check_my_data(request):

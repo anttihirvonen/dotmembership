@@ -1,6 +1,45 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 {% block title %}jäsenrekisteri{% endblock %}
+{% block extra_head %}
+<script type="text/javascript">
+function show_form_errors(form, error_json)
+{
+    clear_form_errors(form);
+    for (name in error_json) {
+        var elem = form.find('input[name=' + name + '], textarea[name=' + name + ']');
+        elem.closest('.control-group').addClass('error');
+        elem.after('<span class="help-inline">' + error_json[name] + '</span>');
+    }
+}
+
+function clear_form_errors(form)
+{
+    form.find("span.help-inline").remove();
+    form.find('.control-group').removeClass('error');
+}
+
+$(function() {
+    $("#join-form").submit(function() {
+        $.ajax({
+            url: "{% url members-join %}",
+            data: $(this).serialize(),
+            type: "post",
+            success: function(data) {
+                if(data.status == "error") {
+                    show_form_errors($("#join-form"), data.errors); 
+                }
+                if(data.status == "success") {
+                    alert("suc");
+                }
+            }
+        });
+        return false;
+    });
+
+});
+</script>
+{% endblock %}
 {% block content %}
 <div class="row">
     <div class="span12">
@@ -12,10 +51,12 @@
 <div class="row">
     <div class="span12">
         <h2>Uusi jäsen</h2>
-        <form action="" method="post" class="form-horizontal">
+        <form action="" method="post" class="form-horizontal" id="join-form">
             {% csrf_token %}                   
             {{ member_form|bootstrap }}
-            <button type="submit" class="btn btn-info btn-large">Klikkaa & liity jäseneksi!</button>
+            <div class="controls">
+                <button type="submit" class="btn btn-info btn-large">Klikkaa & liity jäseneksi!</button>
+            </div>
         </form>
 
     </div>
