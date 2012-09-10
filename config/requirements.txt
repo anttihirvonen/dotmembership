@@ -2,6 +2,7 @@ django==1.4
 django-model-utils==1.1.0
 django-generic-confirmation==0.3
 django-reversion==1.6.3
+django-ajaxutils==0.2
 django-bootstrap-form==2.0.5
 yolk
 south
