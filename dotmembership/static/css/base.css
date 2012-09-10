@@ -1,12 +1,20 @@
 /* CSS styles */
 body {
-    background-image: url("../img/background.jpg");
-    background-position: 0px -150px;
+    /*background-image: url("../img/background.jpg");
+    background-position: 0px -150px;*/
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background: rgb(247,226,66); /* Old browsers */
+background: -moz-radial-gradient(center, ellipse cover, rgba(247,226,66,1) 0%, rgba(254,191,1,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(247,226,66,1)), color-stop(100%,rgba(254,191,1,1))); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover, rgba(247,226,66,1) 0%,rgba(254,191,1,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover, rgba(247,226,66,1) 0%,rgba(254,191,1,1) 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover, rgba(247,226,66,1) 0%,rgba(254,191,1,1) 100%); /* IE10+ */
+background: radial-gradient(ellipse at center, rgba(247,226,66,1) 0%,rgba(254,191,1,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7e242', endColorstr='#febf01',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
-.container {
-}
-
+/*
 h1 {
 	font-family: 'Allerta', Helvetica, Arial, sans-serif;
 	font-size: 30px;
@@ -18,24 +26,26 @@ p {
 	font-size: 18px;
 	line-height: 25px;
 }
-
-
-[class*="span"] {
+*/
+/*[class*="span"] {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 20px;
+}*/
+
+.container {
+    width: 740px;
 }
 
 #header {
-    width: 400px;
     margin-left: auto;
     margin-right: auto;
     *zoom: 1;
 }
 
 #header > img {
-    width: 400px;
+    max-width: 400px;
     margin-top: 50px;
     margin-bottom: 50px;
 }
@@ -43,6 +53,30 @@ p {
 #content {
     background: rgba(245, 245, 245, 0.8);
     -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -o-border-radius: 20px;
+    border-radius: 20px;
+    width: 700px;
+    padding: 20px;
+    margin-bottom: 50px;
 }
 
+@media (max-width: 767px) {
+    body {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .container {
+        width: auto;
+    }
+    
+    #content {
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        -o-border-radius: 0px;
+        border-radius: 0px;
+        width: auto;
+        padding: 20px;
+    }
+}
 
