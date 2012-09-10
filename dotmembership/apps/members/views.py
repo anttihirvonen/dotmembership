@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 
 from generic_confirmation.forms import ConfirmationForm
 
@@ -28,14 +29,18 @@ def confirm_join(request, token):
     copied here and the behavior customized.
     """
     form = ConfirmationForm({'token': token})
-    if form.is_valid():
+    if form.is_valid() or (settings.DEBUG and request.GET.get("member_id")):
         # ConfirmationForm.save returns either the object
         # or False, if the token was not found in the database (I guess
         # this is a bug, since is_valid() should not return True if token
         # cannot be found)
         #from .models import Member
         #member = Member.objects.get(pk=1)
-        member = form.save()
+        if settings.DEBUG and request.GET.get("member_id"):
+            from .models import Member
+            member = Member.objects.get(pk=request.GET.get("member_id"))
+        else:
+            member = form.save()
         if member:
             fields = MemberForm._meta.fields
 
