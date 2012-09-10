@@ -32,9 +32,12 @@
     </head>
     <body>
     <div class="container">
-        <div id="header" class="span6">
-            <img src="{{ STATIC_URL }}img/dot_eng.png" class="header-logo" />
+        <div class="row">
+            <div id="header" class="span6 offset3">
+                <img src="{{ STATIC_URL }}img/dot_eng.png" class="header-logo" />
+            </div>
         </div>
+        <div class="clear"></div>
         <div id="content">
             {% block content %}
 
