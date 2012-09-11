@@ -2,6 +2,11 @@
 {% load bootstrap %}
 {% block title %}jäsenrekisteri{% endblock %}
 {% block extra_head %}
+<style type="text/css">
+    #content {
+        background-color: transparent;
+    }
+</style>
 <script type="text/javascript">
 function show_form_errors(form, error_json)
 {
@@ -49,8 +54,6 @@ $(function() {
 <div class="row">
     <div class="span12">
         <h1>Liity jäseneksi tai tarkasta jäsentietosi</h1>
-        <p>Tervetuloa DOTin jäsenrekisteriin.
-        </p>
     </div>
 </div>
 <div class="row">
