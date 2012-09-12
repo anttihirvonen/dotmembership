@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row no-left-margin">
+        <div class="span12">
+            <h1>{% block title %}Sivun otsikko{% endblock %}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12" id="content">
+            {% block site_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
