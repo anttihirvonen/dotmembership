@@ -65,7 +65,7 @@ body {
     margin-bottom: 20px;
 }
 
-.content {
+#content {
     /* fallback for browsers that don't support rgba */
     background: rgb(0, 0, 0);
     background: rgba(0, 0, 0, 0.6);
@@ -140,6 +140,7 @@ body {
         padding-left: 0;
         padding-right: 0;
     }
+
     .container {
         width: auto;
     }
@@ -151,6 +152,21 @@ body {
         border-radius: 0px;
         width: auto;
         padding: 20px;
+    }
+
+    #selector-content {
+        width: auto;
+    }
+
+    .member-data .th {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    /* no opacity for small displays */
+    #content, #selector-content, #new-old-selector li {
+        background: #111;
     }
 }
 
