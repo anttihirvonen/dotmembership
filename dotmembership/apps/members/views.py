@@ -57,16 +57,16 @@ def confirm_join(request, token):
             member = Member.objects.get(pk=request.GET.get("member_id"))
         else:
             member = form.save()
+
         if member:
             fields = MemberForm._meta.fields
 
             # Pass form in to show the user data that was submitted
-            context = {"token_valid": True,
-                       "fields": fields,
+            context = {"fields": fields,
                        "member": member}
-            return render(request, "members/confirm_join.html", context)
+            return render(request, "members/confirm_join_success.html", context)
 
-    return render(request, "members/confirm_join.html", {"token_valid": False})
+    return render(request, "members/confirm_join_error.html")
 
 
 def check_my_data(request):
