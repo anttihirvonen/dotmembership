@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
 from model_utils import Choices
+from datetime import timedelta, date
 
 from dotmembership.apps.members.models import Member
 
@@ -29,7 +30,7 @@ class Invoice(models.Model):
 
     # Dates
     created = models.DateTimeField(auto_now_add=True, verbose_name=_(u"luotu"))
-    due_date = models.DateField(verbose_name=_(u"eräpäivä"))
+    due_date = models.DateField(verbose_name=_(u"eräpäivä"), blank=True)
     payment_date = models.DateField(verbose_name=_(u"maksupäivä"), blank=True, null=True)
 
     payment_method = models.CharField(_(u"maksutapa"), choices=PAYMENT, max_length=15, blank=True, null=True)
@@ -38,6 +39,12 @@ class Invoice(models.Model):
     # Automatically calculated at post_save based on the id
 
     reference_number = models.IntegerField(_(u"viitenumero"), blank=True, null=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.due_date:
+            self.due_date = date.today() + timedelta(days=14)
+
+        super(Invoice, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return "{0}, {1}".format(self.member, self.for_year)
