@@ -1,6 +1,10 @@
 # encoding: utf-8
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 from model_utils import Choices
 
@@ -36,3 +40,25 @@ class Member(models.Model):
     class Meta:
         verbose_name = _(u"jäsen")
         verbose_name_plural = _(u"jäsenet")
+
+
+@receiver(post_save, sender=Member, dispatch_uid="member.create_invoice_send_welcome_mail")
+def create_first_invoice_and_send_welcome_email(sender, instance, created, **kwargs):
+    if created:
+        # TODO: fast hack, refactor this later...
+        import datetime
+        from dotmembership.apps.billing.models import Invoice
+        from .forms import MemberForm
+        from django.conf import settings
+
+        # TODO: don't hardcode amount
+        invoice = instance.invoices.create(status=Invoice.STATUS.sent,
+                                           for_year=datetime.date.today().year,
+                                           amount="5")
+        subject = _(u"Tervetuloa DOTin jäseneksi!")
+        fields = MemberForm._meta.fields
+        body = render_to_string("members/mails/welcome.txt",
+                                {'member': instance,
+                                 'fields': fields,
+                                 'invoice': invoice})
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [instance.email])

@@ -1,0 +1,34 @@
+{% load members_extra %}
+Tervetuloa jäseneksi, {{ member.first_name }}!
+
+Olet nyt DOTtilainen!
+
+Sinun tulee enää maksaa jäsenmaksu alta löytyvien
+ohjeiden mukaisesti eräpäivään mennessä, tai jäsenyytesi
+perutaan.
+
+Jäsenmaksu vuodelle {{ invoice.for_year }}
+------------------------------------------
+Saaja: DOT ry
+Tilinumero: FI36 1309 3000 2025 49
+Summa: {{ invoice.amount }} euroa
+Viitenumero: {{ invoice.reference_number }}
+Eräpäivä: {{ invoice.due_date }}
+
+Muista käyttää maksaessasi viitenumeroa!
+
+Jäsentiedot
+-----------
+Syötit allaolevat tiedot liittyessäsi jäseneksi.
+
+{% for field in fields %}{{ member|getfieldname:field|capfirst }}: {{ member|getfield:field|default:"(Tyhjä)" }}
+{% endfor %}
+
+Mikäli tiedoissa on virheitä, voit muokata niitä etusivun
+"vanha jäsen"-kohdan kautta.
+
+Nähdään tapahtumissa! Katso tulevat saunaillat ja muut kivat 
+sivuiltamme osoitteesta http://dot.ayy.fi.
+
+--
+Digitaalisen median ammattiainekerho DOT ry
