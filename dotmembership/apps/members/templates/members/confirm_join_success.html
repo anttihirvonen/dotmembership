@@ -1,0 +1,25 @@
+{% extends "base_content.html" %}
+{% load members_extra %}
+{% block title %}Liittymisesi jäseneksi on vahvistettu!{% endblock %}
+{% block site_content %}
+<div class="row">
+    <div class="span12">
+        <h3>Liityit jäseneksi seuraavin tiedoin</h3>
+        <p>Alla on listattu ne tiedot, jotka syötit lomakkeeseen liittyessäsi jäseneksi. Mikäli tiedoissasi on virheitä, voit muuttaa niitä <a href="{% url index %}">etusivun</a> "vanha jäsen"-kohdan kautta.</p>
+        <div class="row member-data">
+            {% for field in fields %}
+            <div class="span6 th">
+                {{ member|getfieldname:field|capfirst }}
+            </div>
+            <div class="span6 td">
+                {{ member|getfield:field }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="span12">
+        <h3>Maksa jäsenmaksu</h3>
+        <p>Alla näät maksutiedot jäsenmaksun maksamista varten. Nämä tiedot on lähetetty myös sähköpostiisi. Mikäli maksoit jäsenmaksun käteisellä, voit ohittaa tämän vaiheen – rahastonhoitajamme kirjaa maksun maksetuksi automaattisesti.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base_content.html" %}
+{% block title %}Liittymisesi vahvistaminen epäonnistui{% endblock %}
+{% block site_content %}
+<div class="row">
+    <div class="span12">
+        <p>Voi harmi – emme pystyneet vahvistamaan liitymistäsi DOTin jäseneksi.</p>
+        <p>Syynä tähän voi olla jokin seuraavista:
+        <ul>
+            <li><b>Päivitit sivun.</b> Vahvistuslinkki toimii vain kerran, joten tästä syystä sait virheviestin. Ei hätää! Lähetimme sinulle sähköpostiin samat tiedot,
+            jotka olisit nähnyt tällä sivulla, joten et menettänyt mitään.</li>
+            <li><b>Olet jo jäsen, ja klikannut linkkiä siis aiemmin.</b> Voit tarkistaa <a href="{% url index %}#old">etusivulta</a> kohdasta "vanha jäsen" jäsenyytesi tilan.</li>
+            <li><b>Järjestelmässämme on bugi.</b> Mikäli et ole jo jäsen ja sait tämän virheen, ota yhteys ylläpitoon joko irkissä kanavalla #dot @ IRCNet, tai
+            lähetä sähköpostia osoitteeseen dot-hallitus@list.ayy.fi</li>
+        </ul>
+        </p>
+    </div>
+</div>
+{% endblock %}
