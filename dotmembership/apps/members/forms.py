@@ -25,4 +25,4 @@ class MemberForm(DeferredForm):
                                  {'token': instance.token,
                                   'base_url': "http://{0}".format(Site.objects.get_current().domain),
                                   'first_name': self.cleaned_data['first_name']})
-        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.cleaned_data['email'],])
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.cleaned_data['email']])

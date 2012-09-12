@@ -135,6 +135,10 @@ body {
     height: 2em;
 }
 
+.form-success-box {
+    display: none;
+}
+
 @media (max-width: 767px) {
     body {
         padding-left: 0;
