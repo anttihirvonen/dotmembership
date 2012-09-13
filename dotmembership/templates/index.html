@@ -47,6 +47,23 @@ $(function() {
         });
         return false;
     });
+    
+    $("#email-form").submit(function() {
+        $.ajax({
+            url: "{% url members-send_edit_link %}",
+            data: $(this).serialize(),
+            type: "post",
+            success: function(data) {
+                if(data.status == "error") {
+                    show_form_errors($("#email-form"), data.errors); 
+                }
+                else if(data.status == "success") {
+                    $("#email-form").slideUp(function() { $("#email-form-success").slideDown(); });
+                }
+            }
+        });
+        return false;
+    });
 
 });
 </script>
@@ -84,7 +101,7 @@ $(function() {
             </div>
 
             <div class="tab-pane" id="old">
-                <p>Haluatko tarkistaa tai muokata jäsentietojasi tai tarkastaa jäsenmaksusi tilan? Syötä sähköpostiosoitteesi, jolla olet liittynyt jäseneksi, allaolevaan lomakkeeseen ja saat jäsentietosi sekä lyhytkäyttöisen linkin tietojen muokkaamiseen.</p>
+                <p>Haluatko tarkistaa jäsentietosi tai jäsenmaksusi tilan? Syötä sähköpostiosoitteesi, jolla olet liittynyt jäseneksi, allaolevaan lomakkeeseen ja saat sähköpostiisi jäsentietosi sekä lyhytkäyttöisen linkin tietojen muokkaamiseen.</p>
                 <form action="" method="post" class="form-horizontal" id="email-form">
                     {% csrf_token %}                   
                     {{ email_form|bootstrap }}
@@ -92,9 +109,10 @@ $(function() {
                         <button type="submit" class="btn btn-info btn-large">Tilaa muutoslinkki</button>
                     </div>
                 </form>
-                <div id="join-form-success" class="form-success-box">
-                    <h3>Muutoslinkki lähetettiin</h3>
-                    <p>Lähetetty!</p>
+                <div id="email-form-success" class="form-success-box">
+                    <h3>Tiedot ja muutoslinkki lähetettiin!</h3>
+                    <p>Syöttämääsi sähköpostiosoitteeseen lähetettiin nykyiset jäsentietosi sekä linkki, joka on voimassa 30 minuuttia. Voit käydä muokkaamassa jäsentietojasi kyseisen linkin kautta.</p>
+                    <p>Mikäli viestiä ei kuulu, syötit kenttään todennäköisesti väärän sähköpostiosoitteen. Mikäli et muista osoitetta, jolla liityit jäseneksi, voit kysellä sitä sähköpostilla osoitteesta dot@kapsi.fi tai kanavalla #dot @ IRCNet.</p>
                 </div>
             </div>
         </div>

@@ -6,6 +6,8 @@ from generic_confirmation.forms import ConfirmationForm
 from ajaxutils.decorators import ajax
 
 from .forms import MemberForm, MemberEmailForm
+from .models import Member
+
 from dotmembership.apps.billing.models import Invoice
 
 
@@ -37,6 +39,14 @@ def join(request):
     return {'status': 'error', 'errors': form.errors}
 
 
+@ajax(require_POST=True)
+def send_edit_link(request):
+    """
+    AJAX view for sending member edit link in email.
+    """
+    pass
+
+
 def confirm_join(request, token):
     """
     This view does basically the same as generic_confirmation.views.confirm_by_get,
@@ -52,13 +62,12 @@ def confirm_join(request, token):
         #from .models import Member
         #member = Member.objects.get(pk=1)
         if settings.DEBUG and request.GET.get("member_id"):
-            from .models import Member
             member = Member.objects.get(pk=request.GET.get("member_id"))
         else:
             member = form.save()
 
         if member:
-            fields = MemberForm._meta.fields
+            fields = Member.PUBLIC_FIELDS
 
             # Pass form in to show the user data that was submitted
             # The invoice shown here is the one that is created in post_save
