@@ -6,6 +6,7 @@ from generic_confirmation.forms import ConfirmationForm
 from ajaxutils.decorators import ajax
 
 from .forms import MemberForm
+from dotmembership.apps.billing.models import Invoice
 
 
 def index(request):
@@ -62,8 +63,10 @@ def confirm_join(request, token):
             fields = MemberForm._meta.fields
 
             # Pass form in to show the user data that was submitted
+            # The invoice shown here is the one that is created in post_save
             context = {"fields": fields,
-                       "member": member}
+                       "member": member,
+                       "invoice": member.invoices.get(status=Invoice.STATUS.sent)}
             return render(request, "members/confirm_join_success.html", context)
 
     return render(request, "members/confirm_join_error.html")
