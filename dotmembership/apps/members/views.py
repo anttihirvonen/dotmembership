@@ -5,7 +5,7 @@ from generic_confirmation.forms import ConfirmationForm
 
 from ajaxutils.decorators import ajax
 
-from .forms import MemberForm
+from .forms import MemberForm, MemberEmailForm
 from dotmembership.apps.billing.models import Invoice
 
 
@@ -13,16 +13,14 @@ def index(request):
     """
     Index page of the member register.
 
-    Renders a page which contains forms.
+    Renders a page which contains forms for joining and
+    sending a self edit link
     """
-    if request.method == "POST":
-        form = MemberForm(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = MemberForm()
+    member_form = MemberForm()
+    email_form = MemberEmailForm()
 
-    return render(request, 'index.html', {'member_form': form})
+    return render(request, 'index.html', {'member_form': member_form,
+        'email_form': email_form})
 
 
 @ajax(require_POST=True)
