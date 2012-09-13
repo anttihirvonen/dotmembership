@@ -14,6 +14,11 @@ class Member(models.Model):
                          ("support", _(u"kannatus")),
                          ("honorary", _(u"kunnia")))
 
+    PUBLIC_FIELDS = ("id", "first_name", "last_name", "email", "home_town",
+                     "school", "major", "class_year", "joined")
+
+    id = models.AutoField(_(u"jäsennumero"), primary_key=True)
+
     # The important data
     first_name = models.CharField(_(u"etunimi"), max_length=30)
     last_name = models.CharField(_(u"sukunimi"), max_length=30)
@@ -31,7 +36,7 @@ class Member(models.Model):
                                      help_text=_(u"Vuosi, jolloin valmistuit/arvioit valmistuvasi."))
 
     # Membership data
-    joined = models.DateTimeField(_(u"liittynyt"), auto_now_add=True, editable=False)
+    joined = models.DateTimeField(_(u"liittymisaika"), auto_now_add=True, editable=False)
     membership_type = models.CharField(_(u"jäsentyyppi"), choices=MEMBERSHIP, max_length=15)
 
     def __unicode__(self):
@@ -56,7 +61,7 @@ def create_first_invoice_and_send_welcome_email(sender, instance, created, **kwa
                                            for_year=datetime.date.today().year,
                                            amount="5")
         subject = _(u"Tervetuloa DOTin jäseneksi!")
-        fields = MemberForm._meta.fields
+        fields = Member.PUBLIC_FIELDS
         body = render_to_string("members/mails/welcome.txt",
                                 {'member': instance,
                                  'fields': fields,
