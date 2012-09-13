@@ -5,7 +5,7 @@
 <div class="row">
     <div class="span12">
         <h3>Liityit jäseneksi seuraavin tiedoin</h3>
-        <p>Alla on listattu ne tiedot, jotka syötit lomakkeeseen liittyessäsi jäseneksi. Mikäli tiedoissasi on virheitä, voit muuttaa niitä <a href="{% url index %}">etusivun</a> "vanha jäsen"-kohdan kautta.</p>
+        <p>Alla on listattu ne tiedot, jotka syötit lomakkeeseen liittyessäsi jäseneksi. Mikäli tiedoissasi on virheitä, voit muuttaa niitä <a href="{{ member.edit_link }}">tämän sivun</a> kautta.</p>
         <div class="row member-data">
             {% for field in fields %}
             <div class="span6 th">
