@@ -5,6 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from django.core.signing import TimestampSigner
+from django.core.urlresolvers import reverse
 
 from model_utils import Choices
 
@@ -38,6 +40,21 @@ class Member(models.Model):
     # Membership data
     joined = models.DateTimeField(_(u"liittymisaika"), auto_now_add=True, editable=False)
     membership_type = models.CharField(_(u"jäsentyyppi"), choices=MEMBERSHIP, max_length=15)
+
+    @property
+    def timestamped_id(self):
+        """
+        Returns self.id signed using TimestampSigner.
+        """
+        signer = TimestampSigner()
+        return signer.sign(str(self.id))
+
+    @property
+    def edit_link(self):
+        """
+        Generates a link for member edit form.
+        """
+        return reverse("members-edit_member", args=[self.timestamped_id])
 
     def __unicode__(self):
         return "{0}, {1} ({2})".format(self.last_name, self.first_name, self.id)
