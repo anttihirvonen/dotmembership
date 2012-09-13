@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 
 from generic_confirmation.forms import ConfirmationForm
 
@@ -44,7 +45,19 @@ def send_edit_link(request):
     """
     AJAX view for sending member edit link in email.
     """
-    pass
+    form = MemberEmailForm(request.POST)
+
+    if form.is_valid():
+        instance = form.save(commit=False)
+        try:
+            member = Member.objects.get(email=instance.email)
+            member.send_edit_link()
+        except Member.DoesNotExist:
+            pass
+
+        return {'status': 'success'}
+
+    return {'status': 'error', 'errors': form.errors}
 
 
 def confirm_join(request, token):
@@ -77,6 +90,19 @@ def confirm_join(request, token):
             return render(request, "members/confirm_join_success.html", context)
 
     return render(request, "members/confirm_join_error.html")
+
+
+def edit(request, signed_id):
+    signer = TimestampSigner()
+    try:
+        signer.unsign(signed_id, max_age=10)
+    except (BadSignature, SignatureExpired):
+        return render(request, "members/edit_failed.html")
+
+    if request.method == "POST":
+        pass
+
+    return render(request, "members/edit.html")
 
 
 def check_my_data(request):
