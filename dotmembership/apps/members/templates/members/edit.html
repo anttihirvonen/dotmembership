@@ -2,23 +2,23 @@
 {% load bootstrap %}
 {% block title %}Hei {{ member.first_name }}!{% endblock %}
 {% block site_content %}
-<div class="alert">
-  <button type="button" class="close" data-dismiss="alert">×</button>
-  <strong>Warning!</strong> Best check yo self, you're not looking too good.
-</div>
 <div class="row">
     <div class="span12">
         <h3>Muokkaa sähköpostiosoitettasi</h3>
         <form action="" method="POST" class="form form-horizontal">
             {% csrf_token %}
             {{ email_form|bootstrap }}
-            <button type="submit" name="edit_email" class="btn btn-large">Tallenna</button>
+            <div class="controls">
+                <button type="submit" name="edit_email" class="btn btn-large">Tallenna</button>
+            </div>
         </form>
         <h3>Muokkaa jäsentietojasi</h3>
         <form action="" method="POST" class="form form-horizontal">
             {% csrf_token %}
             {{ member_form|bootstrap }}
-            <button type="submit" name="edit_member" class="btn btn-large">Tallenna</button>
+            <div class="controls">
+                <button type="submit" name="edit_member" class="btn btn-large">Tallenna</button>
+            </div>
         </form>
     </div>
 </div>

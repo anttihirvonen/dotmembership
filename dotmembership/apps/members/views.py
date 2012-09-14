@@ -1,7 +1,9 @@
+# encoding: utf-8
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+from django.contrib import messages
 
 from generic_confirmation.forms import ConfirmationForm
 
@@ -107,7 +109,7 @@ def confirm_email_change(request, token):
 def edit(request, signed_id):
     signer = TimestampSigner()
     try:
-        id = signer.unsign(signed_id, max_age=30*60)  # 30 minutes
+        id = signer.unsign(signed_id, max_age=30 * 60)  # 30 minutes
         member = Member.objects.get(pk=id)
     except (BadSignature, SignatureExpired, Member.DoesNotExist):
         return render(request, "members/edit_failed.html")
@@ -120,12 +122,19 @@ def edit(request, signed_id):
             member_form = MemberForm(request.POST, instance=member)
             if member_form.is_valid():
                 member_form.save()
+                messages.success(request, "Jäsentiedot tallennettu.")
                 return HttpResponseRedirect(request.get_full_path())
+            else:
+                messages.error(request, "Korjaa jäsentiedoissa esiintyvät virheet.")
         elif "edit_email" in request.POST:
             email_form = MemberEmailEditForm(request.POST, instance=member)
             if email_form.is_valid():
                 email_form.save()
+                messages.success(request, u"Syöttämääsi sähköpostiosoitteeseen %s lähetettiin vahvistusviesti, \
+                        josta löytyvää linkkiä sinun tulee käydä klikkaamassa vahvistaaksesi muutoksen." % email_form.cleaned_data["email"])
                 return HttpResponseRedirect(request.get_full_path())
+            else:
+                messages.error(request, "Korjaa virheet.")
 
     return render(request, "members/edit.html", {"member": member,
                                                  "member_form": member_form,
