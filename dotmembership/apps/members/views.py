@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 
 from generic_confirmation.forms import ConfirmationForm
 
 from ajaxutils.decorators import ajax
 
-from .forms import MemberForm, MemberEmailForm, MemberJoinForm
+from .forms import MemberForm, MemberEmailForm, MemberJoinForm, MemberEmailEditForm
 from .models import Member
 
 from dotmembership.apps.billing.models import Invoice
@@ -92,6 +93,10 @@ def confirm_join(request, token):
     return render(request, "members/confirm_join_error.html")
 
 
+def confirm_email_change(request, token):
+    pass
+
+
 def edit(request, signed_id):
     signer = TimestampSigner()
     try:
@@ -100,15 +105,23 @@ def edit(request, signed_id):
     except (BadSignature, SignatureExpired, Member.DoesNotExist):
         return render(request, "members/edit_failed.html")
 
+    member_form = MemberForm(instance=member)
+    email_form = MemberEmailEditForm(instance=member)
     if request.method == "POST":
-        form = MemberForm(request.POST, instance=member)
-        if form.is_valid():
-            form.save()
-    else:
-        form = MemberForm(instance=member)
+        if "edit_member" in request.POST:
+            member_form = MemberForm(request.POST, instance=member)
+            if member_form.is_valid():
+                member_form.save()
+                return HttpResponseRedirect(request.get_full_path())
+        elif "edit_email" in request.POST:
+            email_form = MemberEmailEditForm(request.POST, instance=member)
+            if email_form.is_valid():
+                email_form.save()
+                return HttpResponseRedirect(request.get_full_path())
 
     return render(request, "members/edit.html", {"member": member,
-                                                 "member_form": form })
+                                                 "member_form": member_form,
+                                                 "email_form": email_form})
 
 
 def check_my_data(request):
