@@ -11,7 +11,25 @@ from generic_confirmation.forms import DeferredForm
 from .models import Member
 
 
-class MemberForm(DeferredForm):
+class MemberForm(forms.ModelForm):
+    """
+    Form for editing an old member. Does not expose
+    email field, as it is defined separately as
+    DeferredForm.
+    """
+    class Meta:
+        model = Member
+        fields = ("first_name", "last_name", "email", "home_town",
+                  "school", "major", "class_year")
+
+
+class MemberEmailForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = ("email",)
+
+
+class MemberJoinForm(DeferredForm):
     """
     The main form for registering a new member.
     """
@@ -29,7 +47,3 @@ class MemberForm(DeferredForm):
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.cleaned_data['email']])
 
 
-class MemberEmailForm(forms.ModelForm):
-    class Meta:
-        model = Member
-        fields = ("email",)

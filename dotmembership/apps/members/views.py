@@ -6,7 +6,7 @@ from generic_confirmation.forms import ConfirmationForm
 
 from ajaxutils.decorators import ajax
 
-from .forms import MemberForm, MemberEmailForm
+from .forms import MemberForm, MemberEmailForm, MemberJoinForm
 from .models import Member
 
 from dotmembership.apps.billing.models import Invoice
@@ -19,7 +19,7 @@ def index(request):
     Renders a page which contains forms for joining and
     sending a self edit link
     """
-    member_form = MemberForm()
+    member_form = MemberJoinForm()
     email_form = MemberEmailForm()
 
     return render(request, 'index.html', {'member_form': member_form,
@@ -31,7 +31,7 @@ def join(request):
     """
     AJAX view for adding a new member to registry.
     """
-    form = MemberForm(request.POST)
+    form = MemberJoinForm(request.POST)
 
     if form.is_valid():
         form.save()
@@ -95,14 +95,20 @@ def confirm_join(request, token):
 def edit(request, signed_id):
     signer = TimestampSigner()
     try:
-        signer.unsign(signed_id, max_age=10)
-    except (BadSignature, SignatureExpired):
+        id = signer.unsign(signed_id, max_age=30*60)  # 30 minutes
+        member = Member.objects.get(pk=id)
+    except (BadSignature, SignatureExpired, Member.DoesNotExist):
         return render(request, "members/edit_failed.html")
 
     if request.method == "POST":
-        pass
+        form = MemberForm(request.POST, instance=member)
+        if form.is_valid():
+            form.save()
+    else:
+        form = MemberForm(instance=member)
 
-    return render(request, "members/edit.html")
+    return render(request, "members/edit.html", {"member": member,
+                                                 "member_form": form })
 
 
 def check_my_data(request):
