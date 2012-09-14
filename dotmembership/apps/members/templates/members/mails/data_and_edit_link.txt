@@ -1,0 +1,22 @@
+{% load members_extra %}
+Hei,
+
+alla näet tämänhetkiset jäsentietosi. Voit editoida tietojasi linkin
+{{ base_url }}{{ member.edit_link }} 
+kautta (linkki on voimassa 30 minuuttia tästä hetkestä eteepäin).
+
+### Jäsentiedot ###
+
+{% for field in fields %}{{ member|getfieldname:field|capfirst }}: {{ member|getfield:field|default:"(Tyhjä)" }}
+{% endfor %}
+
+
+TODO: lisää tiedot jäsenmaksuista
+
+
+
+Muista vierailla tapahtumissamme! Katso tulevat saunaillat ja muut kivat 
+sivuiltamme osoitteesta http://dot.ayy.fi.
+
+--
+Digitaalisen median ammattiainekerho DOT ry

@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.core.signing import TimestampSigner
 from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
+from django.conf import settings
 
 from model_utils import Choices
 
@@ -56,6 +58,16 @@ class Member(models.Model):
         """
         return reverse("members-edit_member", args=[self.timestamped_id])
 
+    def send_data_and_edit_link(self):
+        subject = _(u"Jäsentietosi sekä muokkauslinkki")
+        fields = self.PUBLIC_FIELDS
+        # TODO: add invoicing details
+        body = render_to_string("members/mails/data_and_edit_link.txt",
+                                {'member': self,
+                                 'base_url': "http://{0}".format(Site.objects.get_current().domain),
+                                 'fields': fields})
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.email])
+
     def __unicode__(self):
         return "{0}, {1} ({2})".format(self.last_name, self.first_name, self.id)
 
@@ -70,7 +82,6 @@ def create_first_invoice_and_send_welcome_email(sender, instance, created, **kwa
         # TODO: fast hack, refactor this later...
         import datetime
         from dotmembership.apps.billing.models import Invoice
-        from .forms import MemberForm
         from django.conf import settings
 
         # TODO: don't hardcode amount
