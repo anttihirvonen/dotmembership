@@ -23,10 +23,9 @@ class MemberForm(forms.ModelForm):
                   "school", "major", "class_year")
 
 
-class MemberEmailForm(forms.ModelForm):
-    class Meta:
-        model = Member
-        fields = ("email",)
+class EmailForm(forms.Form):
+    email = forms.EmailField(label=_(u"Sähköpostiosoite"),
+                             help_text=_(u"Syötä sähköpostiosoite, jolla liityit jäseneksi."))
 
 
 class MemberEmailEditForm(DeferredForm):

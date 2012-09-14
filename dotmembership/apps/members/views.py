@@ -7,7 +7,7 @@ from generic_confirmation.forms import ConfirmationForm
 
 from ajaxutils.decorators import ajax
 
-from .forms import MemberForm, MemberEmailForm, MemberJoinForm, MemberEmailEditForm
+from .forms import MemberForm, EmailForm, MemberJoinForm, MemberEmailEditForm
 from .models import Member
 
 from dotmembership.apps.billing.models import Invoice
@@ -21,7 +21,7 @@ def index(request):
     sending a self edit link
     """
     member_form = MemberJoinForm()
-    email_form = MemberEmailForm()
+    email_form = EmailForm()
 
     return render(request, 'index.html', {'member_form': member_form,
         'email_form': email_form})
@@ -46,13 +46,12 @@ def send_edit_link(request):
     """
     AJAX view for sending member edit link in email.
     """
-    form = MemberEmailForm(request.POST)
+    form = EmailForm(request.POST)
 
     if form.is_valid():
-        instance = form.save(commit=False)
         try:
-            member = Member.objects.get(email=instance.email)
-            member.send_edit_link()
+            member = Member.objects.get(email=form.cleaned_data["email"])
+            member.send_data_and_edit_link()
         except Member.DoesNotExist:
             pass
 
