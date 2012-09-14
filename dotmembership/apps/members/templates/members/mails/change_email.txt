@@ -1,0 +1,10 @@
+Hei!
+
+Halusit muuttaa DOTin jäsenrekisterissä käyttämäsi 
+sähköpostiosoitteen tähän osoitteeseen. Sinun tulee
+käydä hyväksymässä muutos allaolevan linkin kautta:
+
+{{ base_url }}{% url members-confirm_email_change token %}
+
+--
+Digitaalisen median ammattiainekerho DOT ry

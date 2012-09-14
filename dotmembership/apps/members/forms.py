@@ -19,7 +19,7 @@ class MemberForm(forms.ModelForm):
     """
     class Meta:
         model = Member
-        fields = ("first_name", "last_name", "email", "home_town",
+        fields = ("first_name", "last_name", "home_town",
                   "school", "major", "class_year")
 
 
@@ -27,6 +27,20 @@ class MemberEmailForm(forms.ModelForm):
     class Meta:
         model = Member
         fields = ("email",)
+
+
+class MemberEmailEditForm(DeferredForm):
+    class Meta:
+        model = Member
+        fields = ("email",)
+
+    def send_notification(self, user=None, instance=None):
+        subject = _(u"Hyväksy uusi sähköpostiosoite")
+        body = render_to_string("members/mails/change_email.txt",
+                                 {'token': instance.token,
+                                  'base_url': "http://{0}".format(Site.objects.get_current().domain),
+                                  })
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.cleaned_data['email']])
 
 
 class MemberJoinForm(DeferredForm):
