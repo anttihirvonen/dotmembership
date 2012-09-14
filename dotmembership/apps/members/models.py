@@ -10,6 +10,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.conf import settings
 
+import reversion
+
 from model_utils import Choices
 
 
@@ -74,6 +76,8 @@ class Member(models.Model):
     class Meta:
         verbose_name = _(u"jäsen")
         verbose_name_plural = _(u"jäsenet")
+
+reversion.register(Member)
 
 
 @receiver(post_save, sender=Member, dispatch_uid="member.create_invoice_send_welcome_mail")

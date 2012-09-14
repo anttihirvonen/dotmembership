@@ -3,7 +3,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
+
+import reversion
 
 from model_utils import Choices
 from datetime import timedelta, date
@@ -48,6 +49,8 @@ class Invoice(models.Model):
 
     def __unicode__(self):
         return "{0}, {1}".format(self.member, self.for_year)
+
+reversion.register(Invoice)
 
 
 @receiver(post_save, sender=Invoice)
