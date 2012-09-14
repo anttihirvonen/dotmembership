@@ -41,7 +41,9 @@ $(function() {
                     show_form_errors($("#join-form"), data.errors); 
                 }
                 else if(data.status == "success") {
-                    $("#join-form").slideUp(function() { $("#join-form-success").slideDown(); });
+                    clear_form_errors($("#join-form"));
+                    $("#join-modal").modal();
+                    $("#join-form")[0].reset();
                 }
             }
         });
@@ -58,7 +60,9 @@ $(function() {
                     show_form_errors($("#email-form"), data.errors); 
                 }
                 else if(data.status == "success") {
-                    $("#email-form").slideUp(function() { $("#email-form-success").slideDown(); });
+                    clear_form_errors($("#email-form"));
+                    $("#email-modal").modal();
+                    $("#email-form")[0].reset();
                 }
             }
         });
@@ -93,10 +97,18 @@ $(function() {
                         <button type="submit" class="btn btn-info btn-large">Klikkaa & liity jäseneksi!</button>
                     </div>
                 </form>
-                <div id="join-form-success" class="form-success-box">
-                    <h3>Tiedot tallennettu – käy aktivoimassa jäsenyytesi</h3>
-                    <p>Lähetimme sinulle sähköpostin, joka sisältää ohjeet jäsenyyden aktivointiin. Mikäli syötit vahingossa juuri täyttämääsi lomakkeeseen väärät tiedot, ei hätää – aktivoituasi jäsenyyden pystyt muokkaamaan jäsentietoja niin halutessasi.</p>
-                    <p>Saamasi sähköposti sisältää linkin, jota sinun tulee klikata aktivoidaksesi jäsenyytesi. Tämän lisäksi sinun tulee maksaa DOTin jäsenmaksu. Ohjeet jäsenmaksun maksamiseen löydät sähköpostista.</p>
+                <div id="join-modal" class="modal hide fade">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4>Tiedot tallennettu – käy aktivoimassa jäsenyytesi</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Lähetimme sinulle sähköpostin, joka sisältää ohjeet jäsenyyden aktivointiin. Mikäli syötit vahingossa juuri täyttämääsi lomakkeeseen väärät tiedot, ei hätää – aktivoituasi jäsenyyden pystyt muokkaamaan jäsentietoja niin halutessasi.</p>
+                        <p>Saamasi sähköposti sisältää linkin, jota sinun tulee klikata aktivoidaksesi jäsenyytesi. Tämän lisäksi sinun tulee maksaa DOTin jäsenmaksu. Ohjeet jäsenmaksun maksamiseen löydät sähköpostista.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn " data-dismiss="modal" aria-hidden="true">Sulje</a>
+                    </div>
                 </div>
             </div>
 
@@ -109,10 +121,18 @@ $(function() {
                         <button type="submit" class="btn btn-info btn-large">Tilaa muutoslinkki</button>
                     </div>
                 </form>
-                <div id="email-form-success" class="form-success-box">
-                    <h3>Tiedot ja muutoslinkki lähetettiin!</h3>
-                    <p>Syöttämääsi sähköpostiosoitteeseen lähetettiin nykyiset jäsentietosi sekä linkki, joka on voimassa 30 minuuttia. Voit käydä muokkaamassa jäsentietojasi kyseisen linkin kautta.</p>
-                    <p>Mikäli viestiä ei kuulu, syötit kenttään todennäköisesti väärän sähköpostiosoitteen. Mikäli et muista osoitetta, jolla liityit jäseneksi, voit kysellä sitä sähköpostilla osoitteesta dot@kapsi.fi tai kanavalla #dot @ IRCNet.</p>
+                <div id="email-modal" class="modal hide fade">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4>Tiedot ja muutoslinkki lähetettiin!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Syöttämääsi sähköpostiosoitteeseen lähetettiin nykyiset jäsentietosi sekä linkki, joka on voimassa 30 minuuttia. Voit käydä muokkaamassa jäsentietojasi kyseisen linkin kautta.</p>
+                        <p>Mikäli viestiä ei kuulu, syötit kenttään todennäköisesti väärän sähköpostiosoitteen. Mikäli et muista osoitetta, jolla liityit jäseneksi, voit kysellä sitä sähköpostilla osoitteesta dot@kapsi.fi tai kanavalla #dot @ IRCNet.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn " data-dismiss="modal" aria-hidden="true">Sulje</a>
+                    </div>
                 </div>
             </div>
         </div>
