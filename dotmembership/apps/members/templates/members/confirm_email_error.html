@@ -1,0 +1,16 @@
+{% extends "base_content.html" %}
+{% block title %}Sähköpostin vaihtaminen epäonnistui{% endblock %}
+{% block site_content %}
+<div class="row">
+    <div class="span12">
+        <p>Voi harmi – emme pystyneet vaihtamaan sähköpostiosoitettasi uuteen.</p>
+        <p>Syynä tähän voi olla jokin seuraavista:
+        <ul>
+            <li><b>Päivitit sivun.</b> Vahvistuslinkki toimii vain kerran, joten tästä syystä sait virheviestin. Voit tarkistaa <a href="{% url index %}">etusivun</a> "vanha jäsen"-kohdan kautta, vaihtuiko sähköpostiosoite uuteen.</li>
+            <li><b>Järjestelmässämme on bugi.</b> Mikäli et ole jo jäsen ja sait tämän virheen, ota yhteys ylläpitoon joko irkissä kanavalla #dot @ IRCNet, tai
+            lähetä sähköpostia osoitteeseen dot-hallitus@list.ayy.fi</li>
+        </ul>
+        </p>
+    </div>
+</div>
+{% endblock %}

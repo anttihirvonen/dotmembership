@@ -1,0 +1,13 @@
+{% extends "base_content.html" %}
+{% load members_extra %}
+{% block title %}Hei {{ member.first_name }}!{% endblock %}
+{% block site_content %}
+<div class="row">
+    <div class="span12">
+        <h3>Sähköpostiosoitteesi vaihdettiin</h3>
+        <p>Sähköpostiosoitteesi on nyt vaihdettu osoitteeseen <b>{{ member.email }}</b>. Vanha osoitteesi oli {{ old.email }}.</p>
+        <p>Jatkossa sinun tulee käyttää uutta osoitetta, mikäli haluat muokata jäsentietojasi.</p>
+    </div>    
+</div>
+{% endblock %}
+

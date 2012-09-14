@@ -94,7 +94,15 @@ def confirm_join(request, token):
 
 
 def confirm_email_change(request, token):
-    pass
+    form = ConfirmationForm({'token': token})
+    if form.is_valid():
+        member = form.save()
+        # See confirm_join - this may be buggy behavior
+        if member:
+            return render(request, "members/confirm_email_success.html",
+                    {"member": member})
+
+    return render(request, "members/confirm_email_error.html")
 
 
 def edit(request, signed_id):
@@ -107,6 +115,7 @@ def edit(request, signed_id):
 
     member_form = MemberForm(instance=member)
     email_form = MemberEmailEditForm(instance=member)
+
     if request.method == "POST":
         if "edit_member" in request.POST:
             member_form = MemberForm(request.POST, instance=member)
