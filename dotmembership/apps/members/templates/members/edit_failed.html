@@ -1,0 +1,11 @@
+{% extends "base_content.html" %}
+{% block title %}Tietojen muokkaaminen epäonnistui{% endblock %}
+{% block site_content %}
+<div class="row">
+    <div class="span12">
+        <h3>Linkki on vanhentunut tai epävalidi</h3>
+        <p>Käyttämäsi muokkauslinkki on joko vanhentunut tai epävalidi. Tilaa uusi linkki <a href="{% url index %}">etusivulta</a>.</p>
+        <p>Mikäli linkki ei toisellakaan kerralla toimi, varmista, että kopioit linkin kokonaan. Jos ongelma jatkuu, ota yhteys ylläpitoon joko sähköpostilla dot@kapsi.fi tai irkissä #dot @ IRCnet.</p>
+    </div>
+</div>
+{% endblock %}
