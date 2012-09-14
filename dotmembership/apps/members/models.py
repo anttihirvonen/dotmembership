@@ -43,7 +43,7 @@ class Member(models.Model):
 
     # Membership data
     joined = models.DateTimeField(_(u"liittymisaika"), auto_now_add=True, editable=False)
-    membership_type = models.CharField(_(u"jäsentyyppi"), choices=MEMBERSHIP, max_length=15)
+    membership_type = models.CharField(_(u"jäsentyyppi"), choices=MEMBERSHIP, default=MEMBERSHIP.normal, max_length=15)
 
     @property
     def timestamped_id(self):

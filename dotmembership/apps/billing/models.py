@@ -48,7 +48,7 @@ class Invoice(models.Model):
         super(Invoice, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return "{0}, {1}".format(self.member, self.for_year)
+        return u"{0}, {1}".format(self.member, self.for_year)
 
 reversion.register(Invoice)
 
