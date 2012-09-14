@@ -69,7 +69,7 @@ class Member(models.Model):
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.email])
 
     def __unicode__(self):
-        return "{0}, {1} ({2})".format(self.last_name, self.first_name, self.id)
+        return u"{0}, {1} ({2})".format(self.last_name, self.first_name, self.id)
 
     class Meta:
         verbose_name = _(u"jäsen")
