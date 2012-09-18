@@ -4,6 +4,7 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns('dotmembership.apps.members.views',
         # Normal views
         url(r'^edit/(?P<signed_id>.+)$', 'edit', name="members-edit_member"),
+        url(r'^mailing_list/$', 'mailing_list', name="members-mailing_list"),
         url(r'^confirm_join/(?P<token>\w+)$', 'confirm_join', {}, name="members-confirm_join"),
         url(r'^confirm_email/(?P<token>\w+)$', 'confirm_email_change', {}, name="members-confirm_email_change"),
         # AJAX views

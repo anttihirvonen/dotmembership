@@ -6,6 +6,7 @@ from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from django.contrib import messages
 
 from generic_confirmation.forms import ConfirmationForm
+from django_mailman.models import List
 
 from ajaxutils.decorators import ajax
 
@@ -27,6 +28,30 @@ def index(request):
 
     return render(request, 'index.html', {'member_form': member_form,
         'email_form': email_form})
+
+
+def mailing_list(request):
+    email_form = EmailForm()
+
+    if request.method == "POST":
+        email_form = EmailForm(request.POST)
+        if email_form.is_valid():
+            # Join user
+            list = List(name=settings.MAILMAN_LIST_NAME,
+                        password=settings.MAILMAN_LIST_PASSWORD,
+                        email=settings.MAILMAN_LIST_EMAIL,
+                        main_url=settings.MAILMAN_MAIN_URL,
+                        encoding=settings.MAILMAN_ENCODING)
+            list.subscribe(email=email_form.cleaned_data['email'])
+            messages.success(request, u"Onnittelut, sähköpostiosoitteesi %s on nyt liitetty listalle!" % (email_form.cleaned_data['email'],))
+            return HttpResponseRedirect(request.get_full_path())
+            # send email
+    else:
+        email_form = EmailForm()
+
+    email_form.fields['email'].help_text = u"Syötä sähköpostiosoite, jolla haluat liittyä listalle."
+
+    return render(request, "members/join_mailing_list.html", {'email_form': email_form})
 
 
 @ajax(require_POST=True)

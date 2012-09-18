@@ -1,0 +1,18 @@
+{% extends "base_content.html" %}
+{% load bootstrap %}
+{% block title %}Liity maililistalle!{% endblock %}
+{% block site_content %}
+<div class="row">
+    <div class="span12">
+        <p>Maililistalla dot-info@list.ayy.fi ilmoitamme kaikista tapahtumistamme. Liity listalle, jos
+        olet kiinnostunut toiminnastamme!</p>
+        <form action="" method="POST" class="form form-horizontal">
+            {% csrf_token %}
+            {{ email_form|bootstrap }}
+            <div class="controls">
+                <button type="submit" name="edit_email" class="btn btn-large btn-warning">Klikkaa & liity!</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
