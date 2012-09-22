@@ -33,6 +33,10 @@ class MemberEmailEditForm(DeferredForm):
         model = Member
         fields = ("email",)
 
+    def clean_email(self):
+        if self.instance.email == self.cleaned_data['email']:
+            raise forms.ValidationError(_(u"Syöttämäsi osoite on sama kuin aiempi."))
+
     def send_notification(self, user=None, instance=None):
         subject = _(u"Hyväksy uusi sähköpostiosoite")
         body = render_to_string("members/mails/change_email.txt",
