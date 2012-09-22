@@ -71,6 +71,9 @@ class Invoice(models.Model):
     def __unicode__(self):
         return u"{0}, {1}".format(self.member, self.for_year)
 
+    class Meta:
+        unique_together = ("member", "for_year")
+
 reversion.register(Invoice)
 
 
