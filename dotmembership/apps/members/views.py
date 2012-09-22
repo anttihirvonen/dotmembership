@@ -42,9 +42,19 @@ def mailing_list(request):
                         email=settings.MAILMAN_LIST_EMAIL,
                         main_url=settings.MAILMAN_MAIN_URL,
                         encoding=settings.MAILMAN_ENCODING)
-            list.subscribe(email=email_form.cleaned_data['email'])
-            messages.success(request, u"Onnittelut, sähköpostiosoitteesi %s on nyt liitetty listalle!" % (email_form.cleaned_data['email'],))
-            return HttpResponseRedirect(request.get_full_path())
+            try:
+                list.subscribe(email=email_form.cleaned_data['email'])
+            except Exception as e:
+                # django_mailman doesn't define it's own exceptions,
+                # so we must identify by the args.
+                if email_form.cleaned_data['email'] in str(e):
+                    messages.error(request, u"Olet jo liittynyt listallemme.")
+                else:
+                    # Unknown, let it bubble
+                    raise
+            else:
+                messages.success(request, u"Onnittelut, sähköpostiosoitteesi %s on nyt liitetty listalle!" % (email_form.cleaned_data['email'],))
+                return HttpResponseRedirect(request.get_full_path())
             # send email
     else:
         email_form = EmailForm()
@@ -80,7 +90,8 @@ def send_edit_link(request):
             member = Member.objects.get(email=form.cleaned_data["email"])
             member.send_data_and_edit_link()
         except Member.DoesNotExist:
-            pass
+            return {'status': 'error',
+                    'errors': {'email': u"Tietokannasta ei löytynyt jäsentä antamallasi osoitteella."}}
 
         return {'status': 'success'}
 
@@ -113,6 +124,8 @@ def confirm_join(request, token):
             # The invoice shown here is the one that is created in post_save
             context = {"fields": fields,
                        "member": member,
+                       # This is safe, since at join there will be only one
+                       # invoice anyway
                        "invoice": member.invoices.get(status=Invoice.STATUS.sent)}
             return render(request, "members/confirm_join_success.html", context)
 
@@ -164,7 +177,3 @@ def edit(request, signed_id):
     return render(request, "members/edit.html", {"member": member,
                                                  "member_form": member_form,
                                                  "email_form": email_form})
-
-
-def check_my_data(request):
-    pass
