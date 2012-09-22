@@ -61,6 +61,13 @@ class Member(models.Model):
         """
         return reverse("members-edit_member", args=[self.timestamped_id])
 
+    @property
+    def full_name(self):
+        return u"{0} {1}".format(self.first_name, self.last_name)
+
+    def last_invoice(self):
+        return self.invoices.latest()
+
     def send_data_and_edit_link(self):
         subject = _(u"Jäsentietosi sekä muokkauslinkki")
         fields = self.PUBLIC_FIELDS
