@@ -4,13 +4,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-from django.core.mail import send_mail
+from django.core.mail import send_mail, mail_admins
 from django.core.signing import TimestampSigner
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.conf import settings
 
 import reversion
+from django_mailman.models import List
 
 from model_utils import Choices
 
@@ -99,3 +100,19 @@ def create_first_invoice_and_send_welcome_email(sender, instance, created, **kwa
                                  'fields': fields,
                                  'invoice': invoice})
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [instance.email])
+
+        # join user to mailing list
+        list = List(name=settings.MAILMAN_LIST_NAME,
+                    password=settings.MAILMAN_LIST_PASSWORD,
+                    email=settings.MAILMAN_LIST_EMAIL,
+                    main_url=settings.MAILMAN_MAIN_URL,
+                    encoding=settings.MAILMAN_ENCODING)
+        try:
+            list.subscribe(email=instance.email)
+        except Exception as e:
+            # django_mailman doesn't define it's own exceptions,
+            # so we must identify by the args.
+            if instance.email not in str(e):
+                # unknown situation – mail admins
+                mail_admins("Unknown error on list join",
+                            "Member {0}, error {1}".format(instance.email, e))
