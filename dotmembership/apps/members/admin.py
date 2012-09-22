@@ -3,6 +3,8 @@ import reversion
 
 from .models import Member
 
+# Global action disable, should be somwhere else..
+admin.site.disable_action('delete_selected')
 
 class MemberAdmin(reversion.VersionAdmin):
     list_display = ("full_name", "email", "last_payment_year", "last_payment_status")
