@@ -44,6 +44,10 @@ class Invoice(models.Model):
 
     reference_number = models.IntegerField(_(u"viitenumero"), blank=True, null=True, editable=False)
 
+    @property
+    def paid(self):
+        return self.status == self.STATUS.paid
+
     def clean(self):
         from django.core.exceptions import ValidationError
         if self.status == self.STATUS.paid and not (self.payment_date and self.payment_method):
@@ -81,6 +85,8 @@ reversion.register(Invoice)
 def calculate_reference_number(sender, instance, created, **kwargs):
     """
     Calculates reference number for
+    #TODO: this should be probably moved to save(), as it modifies
+    the instance
     """
     if created:
         # One-liner to calculate reference number :)

@@ -9,6 +9,7 @@ from generic_confirmation.forms import ConfirmationForm
 from django_mailman.models import List
 
 from ajaxutils.decorators import ajax
+import datetime
 
 from .forms import MemberForm, EmailForm, MemberJoinForm, MemberEmailEditForm
 from .models import Member
@@ -174,6 +175,12 @@ def edit(request, signed_id):
             else:
                 messages.error(request, "Korjaa virheet.")
 
+    try:
+        years_invoice = member.invoices.get(for_year=datetime.date.today().year)
+    except Invoice.DoesNotExist:
+        years_invoice = None
+
     return render(request, "members/edit.html", {"member": member,
                                                  "member_form": member_form,
-                                                 "email_form": email_form})
+                                                 "email_form": email_form,
+                                                 "years_invoice": years_invoice})

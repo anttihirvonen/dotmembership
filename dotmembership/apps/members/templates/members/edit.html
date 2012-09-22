@@ -1,9 +1,29 @@
 {% extends "base_content.html" %}
 {% load bootstrap %}
+{% load members_extra %}
 {% block title %}Hei {{ member.first_name }}!{% endblock %}
 {% block site_content %}
 <div class="row">
     <div class="span12">
+        <h3>Tämän vuoden jäsenmaksu</h3>
+        {% if years_invoice %}
+            {% if years_invoice.paid %}
+                <p>Olet maksanut vuoden {{ years_invoice.for_year }} jäsenmaksun.</p>
+            {% else %}
+                <p>Et ole maksanut vuoden {{ years_invoice.for_year }} jäsenmaksua. Maksutiedot löydät alta.</p>
+        <div class="row member-data">
+            {% print_row "Saaja" "DOT ry" %}
+            {% print_row "IBAN" "FI36 1309 3000 2025 49" %}
+            {% print_row "BIC" "NDEAFIHH" %}
+            {% print_row "Viitenumero" years_invoice.reference_number %}
+            {% print_row "Summa" years_invoice.amount " euroa" %}
+            {% print_row "" "<i>Mikäli maksat enemmän, tulkitaan ylimenevä osa lahjoitukseksi. :)</i>" %}
+            {% print_row "Eräpäivä" years_invoice.due_date %}
+        </div>
+            {% endif %}
+        {% else %}
+            <p>Kuluvan vuoden jäsenmaksujalaskuja ei ole vielä lähetetty jäsenille.</p>
+        {% endif %}
         <h3>Muokkaa sähköpostiosoitettasi</h3>
         <form action="" method="POST" class="form form-horizontal">
             {% csrf_token %}
