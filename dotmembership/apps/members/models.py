@@ -105,8 +105,9 @@ def create_first_invoice_and_send_welcome_email(sender, instance, created, **kwa
         from django.conf import settings
 
         # TODO: don't hardcode amount
+        # TODO: remove for_year hotfix!
         invoice = instance.invoices.create(status=Invoice.STATUS.sent,
-                                           for_year=datetime.date.today().year,
+                                           for_year=2012,
                                            amount="5")
         subject = _(u"Tervetuloa DOTin jäseneksi!")
         fields = Member.PUBLIC_FIELDS
