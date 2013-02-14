@@ -176,11 +176,11 @@ def edit(request, signed_id):
                 messages.error(request, "Korjaa virheet.")
 
     try:
-        years_invoice = member.invoices.get(for_year=datetime.date.today().year)
+        latest_invoice = member.invoices.latest()
     except Invoice.DoesNotExist:
-        years_invoice = None
+        latest_invoice = None
 
     return render(request, "members/edit.html", {"member": member,
                                                  "member_form": member_form,
                                                  "email_form": email_form,
-                                                 "years_invoice": years_invoice})
+                                                 "latest_invoice": latest_invoice})
