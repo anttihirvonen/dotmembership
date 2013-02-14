@@ -1,6 +1,7 @@
 # encoding: utf-8
 from django.db import models
 from django.db.models.signals import post_save, pre_save
+from django.db.models.query import QuerySet
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
@@ -10,15 +11,25 @@ from django.conf import settings
 import reversion
 
 from model_utils import Choices
+from model_utils.managers import PassThroughManager
 from datetime import timedelta, date
 
 from dotmembership.apps.members.models import Member
 
 
+class InvoiceQuerySet(QuerySet):
+    def unpaid(self):
+        """
+        Returns unpaid invoices.
+        """
+        from .models import Invoice
+        return self.exclude(status=Invoice.STATUS.paid).exclude(status=Invoice.STATUS.missed)
+
+
 # Create your models here.
 class Invoice(models.Model):
     STATUS = Choices(("created", _(u"luotu")),   # created, not shown/sent to member
-                     ("sent", _(u"lähetetty")),  # member has receiver invoice
+                     ("sent", _(u"lähetetty (maksamatta)")),  # member has receiver invoice
                      ("paid", _(u"maksettu")),   # member has paid the invoide
                      ("due", _(u"erääntynyt")),  # the invoice wasn't paid before due date
                      ("missed", _(u"välistä")))  # the invoice wasn't paid during year
@@ -43,6 +54,8 @@ class Invoice(models.Model):
     # Automatically calculated at post_save based on the id
 
     reference_number = models.IntegerField(_(u"viitenumero"), blank=True, null=True, editable=False)
+
+    objects = PassThroughManager.for_queryset_class(InvoiceQuerySet)()
 
     @property
     def paid(self):
@@ -77,6 +90,7 @@ class Invoice(models.Model):
 
     class Meta:
         unique_together = ("member", "for_year")
+        get_latest_by = "for_year"
 
 reversion.register(Invoice)
 
