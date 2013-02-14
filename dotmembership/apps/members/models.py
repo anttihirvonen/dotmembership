@@ -69,13 +69,21 @@ class Member(models.Model):
         return self.invoices.latest()
 
     def send_data_and_edit_link(self):
+        from dotmembership.apps.billing.models import Invoice
         subject = _(u"Jäsentietosi sekä muokkauslinkki")
         fields = self.PUBLIC_FIELDS
         # TODO: add invoicing details
+        invoices = self.invoices.all()
+        try:
+            latest_unpaid = self.invoices.unpaid().latest()
+        except Invoice.DoesNotExist:
+            latest_unpaid = None
         body = render_to_string("members/mails/data_and_edit_link.txt",
                                 {'member': self,
                                  'base_url': "http://{0}".format(Site.objects.get_current().domain),
-                                 'fields': fields})
+                                 'fields': fields,
+                                 'invoices': invoices,
+                                 'latest_unpaid': latest_unpaid})
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.email])
 
     def __unicode__(self):
