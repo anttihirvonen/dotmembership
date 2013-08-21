@@ -5,7 +5,7 @@
 <div class="row">
     <div class="span12">
         <p>Maililistalla dot-info@list.ayy.fi ilmoitamme kaikista tapahtumistamme. Liity listalle, jos
-        olet kiinnostunut toiminnastamme!</p>
+        olet kiinnostunut toiminnastamme! Voit myös liittyä halutessasi jäseneksi <a href="{% url index %}">rekisterin etusivun</a> kautta.</p>
         <form action="" method="POST" class="form form-horizontal">
             {% csrf_token %}
             {{ email_form|bootstrap }}

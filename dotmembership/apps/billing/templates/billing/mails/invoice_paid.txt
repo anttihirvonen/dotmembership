@@ -1,0 +1,7 @@
+Hei {{ invoice.member.first_name }},
+
+jäsenmaksusi vuodelle {{ invoice.for_year }} on nyt
+kirjattu rekisteriimme. Kiitos!
+
+--
+Digitaalisen median ammattiainekerho DOT ry

@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'dotmembership.apps.billing',
     'django.contrib.admin',
     'reversion',
+    'south',
     'generic_confirmation',
     'bootstrapform',
     # Uncomment the next line to enable admin documentation:

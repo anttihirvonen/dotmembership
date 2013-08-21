@@ -10,10 +10,25 @@ kautta (linkki on voimassa 30 minuuttia tästä hetkestä eteepäin).
 {% for field in fields %}{{ member|getfieldname:field|capfirst }}: {{ member|getfield:field|default:"(Tyhjä)" }}
 {% endfor %}
 
+### Jäsenmaksut ### 
+{% if latest_unpaid %}
+Viimeisin jäsenmaksusi ({{ latest_unpaid.for_year }}) on maksamatta!
+Tämä jäsenmaksu on määrätty edellisessä vuosikokouksessa ja on voimassa siihen asti,
+kunnes uudet jäsenmaksut määrätään ja luodaan. Maksa jäsenmaksusi allaolevin tiedoin.
 
-TODO: lisää tiedot jäsenmaksuista
+Saaja: DOT ry
+Tilinumero: FI36 1309 3000 2025 49
+Summa: {{ latest_unpaid.amount }} euroa (ylimenevä osa tulkitaan lahjoitukseksi)
+Viitenumero: {{ latest_unpaid.reference_number }}
+Eräpäivä: {{ latest_unpaid.due_date }}
 
-
+Muista käyttää maksaessasi viitenumeroa!
+{% else %}
+Hienoa, olet maksanut viimeisimmän jäsenmaksun! Olet siis DOTin jäsen.
+{% endif %}
+{% for invoice in invoices %}
+Vuosi {{ invoice.for_year }}: {{ invoice.get_status_display }}
+{% endfor %}
 
 Muista vierailla tapahtumissamme! Katso tulevat saunaillat ja muut kivat 
 sivuiltamme osoitteesta http://dot.ayy.fi.
