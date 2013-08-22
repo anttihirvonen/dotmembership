@@ -31,11 +31,17 @@ class AnnualFee(models.Model):
     When a new annual fee becomes active the billing cycle should be run.
     It generates invoices for all existing users based on the
     selected fee and sends new invoices to members via email.
+    TODO: when implemented, doc here the command name
     """
     year = models.IntegerField(_(u'vuosi'), unique=True)
     amount = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=_(u"summa"))
     start_date = models.DateField(_(u'kauden alkamispäivä'))
     end_date = models.DateField(_(u'kauden loppumispäivä'))
+
+    def __unicode__(self):
+        return u'{0}'.format(self.year)
+
+reversion.register(AnnualFee)
 
 
 class InvoiceQuerySet(QuerySet):

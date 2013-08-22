@@ -1,7 +1,7 @@
 from django.contrib import admin
 import reversion
 
-from .models import Invoice
+from .models import Invoice, AnnualFee
 
 
 class InvoiceAdmin(reversion.VersionAdmin):
@@ -11,3 +11,4 @@ class InvoiceAdmin(reversion.VersionAdmin):
     actions = None
 
 admin.site.register(Invoice, InvoiceAdmin)
+admin.site.register(AnnualFee)
