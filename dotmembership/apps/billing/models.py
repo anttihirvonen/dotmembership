@@ -60,6 +60,9 @@ class Invoice(models.Model):
 
     status = models.CharField(_(u"tila"), choices=STATUS, default=STATUS.created, max_length=15)
 
+    # fee that's invoiced
+    fee = models.ForeignKey(AnnualFee, null=True, default=None)
+
     # Year of the membership payment invoiced here
     for_year = models.IntegerField(_(u"kohdevuosi"), editable=False)
 
