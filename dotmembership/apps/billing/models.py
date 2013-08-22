@@ -17,6 +17,27 @@ from datetime import timedelta, date
 from dotmembership.apps.members.models import Member
 
 
+class AnnualFee(models.Model):
+    """
+    Annual fee for membership.
+
+    When a new member registers, the current annual fee
+    (determined by current date, start_date and end_date) is
+    used to create an invoice for the membership. Note that if
+    annual fee for current date can't be found, an exception is raised.
+    It's therefore admin's responsibility to ensure that a fee
+    exists for any date during which a new user might register.
+
+    When a new annual fee becomes active the billing cycle should be run.
+    It generates invoices for all existing users based on the
+    selected fee and sends new invoices to members via email.
+    """
+    year = models.IntegerField(_(u'vuosi'), unique=True)
+    amount = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=_(u"summa"))
+    start_date = models.DateField(_(u'kauden alkamispäivä'))
+    end_date = models.DateField(_(u'kauden loppumispäivä'))
+
+
 class InvoiceQuerySet(QuerySet):
     def unpaid(self):
         """
@@ -26,7 +47,6 @@ class InvoiceQuerySet(QuerySet):
         return self.exclude(status=Invoice.STATUS.paid).exclude(status=Invoice.STATUS.missed)
 
 
-# Create your models here.
 class Invoice(models.Model):
     STATUS = Choices(("created", _(u"luotu")),   # created, not shown/sent to member
                      ("sent", _(u"lähetetty (maksamatta)")),  # member has receiver invoice
