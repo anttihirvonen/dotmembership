@@ -16,6 +16,7 @@ from django_mailman.models import List
 from model_utils import Choices
 
 
+
 class Member(models.Model):
     MEMBERSHIP = Choices(("normal", _(u"varsinainen")),
                          ("support", _(u"kannatus")),
@@ -100,15 +101,11 @@ reversion.register(Member)
 def create_first_invoice_and_send_welcome_email(sender, instance, created, **kwargs):
     if created:
         # TODO: fast hack, refactor this later...
-        import datetime
-        from dotmembership.apps.billing.models import Invoice
+        from dotmembership.apps.billing.models import Invoice, AnnualFee
         from django.conf import settings
 
-        # TODO: don't hardcode amount
-        # TODO: remove for_year hotfix!
         invoice = instance.invoices.create(status=Invoice.STATUS.sent,
-                                           for_year=2012,
-                                           amount="5")
+                                           fee=AnnualFee.objects.get_active_fee())
         subject = _(u"Tervetuloa DOTin jäseneksi!")
         fields = Member.PUBLIC_FIELDS
         body = render_to_string("members/mails/welcome.txt",

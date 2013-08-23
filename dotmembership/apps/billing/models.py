@@ -12,9 +12,18 @@ import reversion
 
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 
 from dotmembership.apps.members.models import Member
+
+
+class AnnualFeeManager(models.Manager):
+    def get_fee_for_date(self, date):
+        fee = self.get(start_date__lte=date, end_date__gte=date)
+        return fee
+
+    def get_active_fee(self):
+        return self.get_fee_for_date(date.today())
 
 
 class AnnualFee(models.Model):
@@ -27,16 +36,19 @@ class AnnualFee(models.Model):
     annual fee for current date can't be found, an exception is raised.
     It's therefore admin's responsibility to ensure that a fee
     exists for any date during which a new user might register.
+    Fees also should not overlap (too lazy to code any checks
+    for validity...)
 
-    When a new annual fee becomes active the billing cycle should be run.
-    It generates invoices for all existing users based on the
-    selected fee and sends new invoices to members via email.
+    When a new annual fee becomes active the billing cycle should be run,
+    which generates new invoices for all existing members.
     TODO: when implemented, doc here the command name
     """
     year = models.IntegerField(_(u'vuosi'), unique=True)
     amount = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=_(u"summa"))
     start_date = models.DateField(_(u'kauden alkamispäivä'))
     end_date = models.DateField(_(u'kauden loppumispäivä'))
+
+    objects = AnnualFeeManager()
 
     def __unicode__(self):
         return u'{0}'.format(self.year)
@@ -69,11 +81,8 @@ class Invoice(models.Model):
     # fee that's invoiced
     fee = models.ForeignKey(AnnualFee, null=True, default=None)
 
-    # Year of the membership payment invoiced here
-    for_year = models.IntegerField(_(u"kohdevuosi"), editable=False)
-
     # Dates
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_(u"luotu"))
+    created = models.DateTimeField(default=datetime.now, verbose_name=_(u"luotu"))
     due_date = models.DateField(verbose_name=_(u"eräpäivä"), blank=True)
     payment_date = models.DateField(verbose_name=_(u"maksupäivä"), blank=True, null=True)
 
@@ -90,14 +99,23 @@ class Invoice(models.Model):
     def paid(self):
         return self.status == self.STATUS.paid
 
+    @property
+    def for_year(self):
+        return self.fee.year
+
     def clean(self):
         from django.core.exceptions import ValidationError
         if self.status == self.STATUS.paid and not (self.payment_date and self.payment_method):
             raise ValidationError(_(u"Syötä maksupäivä ja -tapa."))
 
     def save(self, *args, **kwargs):
+        # calculate due date
         if not self.due_date:
-            self.due_date = date.today() + timedelta(days=14)
+            self.due_date = self.created + timedelta(days=14)
+
+        # amount from fee object
+        if not self.amount:
+            self.amount = self.fee.amount
 
         send_paid_mail = False
         if self.status == self.STATUS.paid:
@@ -118,8 +136,8 @@ class Invoice(models.Model):
         return u"{0}, {1}".format(self.member, self.for_year)
 
     class Meta:
-        unique_together = ("member", "for_year")
-        get_latest_by = "for_year"
+        unique_together = ("member", "fee")
+        get_latest_by = "created"
 
 reversion.register(Invoice)
 

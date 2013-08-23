@@ -7,13 +7,13 @@ from .models import Member
 admin.site.disable_action('delete_selected')
 
 class MemberAdmin(reversion.VersionAdmin):
-    list_display = ("full_name", "email", "last_payment_year", "last_payment_status")
+    list_display = ("full_name", "email", "last_invoice_year", "last_invoice_status")
 
-    def last_payment_year(self, member):
-        return member.invoices.latest("for_year").for_year
+    def last_invoice_year(self, member):
+        return member.invoices.latest("fee").for_year
 
-    def last_payment_status(self, member):
-        return member.invoices.latest("for_year").status
+    def last_invoice_status(self, member):
+        return member.invoices.latest("fee").status
 
 
 admin.site.register(Member, MemberAdmin)
