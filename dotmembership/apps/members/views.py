@@ -14,7 +14,7 @@ import datetime
 from .forms import MemberForm, EmailForm, MemberJoinForm, MemberEmailEditForm
 from .models import Member
 
-from dotmembership.apps.billing.models import Invoice
+from dotmembership.apps.billing.models import Invoice, AnnualFee
 
 
 def index(request):
@@ -26,9 +26,12 @@ def index(request):
     """
     member_form = MemberJoinForm()
     email_form = EmailForm()
+    current_fee = AnnualFee.objects.get_active_fee()
 
-    return render(request, 'index.html', {'member_form': member_form,
-        'email_form': email_form})
+    return render(request, 'index.html', {
+        'member_form': member_form,
+        'email_form': email_form,
+        'current_fee': current_fee})
 
 
 def mailing_list(request):

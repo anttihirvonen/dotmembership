@@ -2,15 +2,13 @@ Hei {{ first_name }}!
 
 Liittymisesi DOTin jäseneksi on nyt loppusuoralla. Sinun tulee vielä 
 vahvistaa jäsenyytesi klikkaamalla allaolevaa linkkiä sekä maksaa
-jäsenmaksu DOTin tilille. Maksutiedot löydät allaolevan linkin takaa
-sekä ne lähetetään sähköpostiisi kunhan olet vahvistanut jäsenyytesi.
+jäsenmaksu DOTin tilille. Maksutiedot löydät allaolevan linkin 
+takaa sekä ne lähetetään sähköpostiisi kunhan olet vahvistanut jäsenyytesi.
 
 {{ base_url }}{% url members-confirm_join token %}
 
 Voit myöhemmin muokata jäsentietojasi vierailemalla etusivulla ja 
-valitsemalla kohdan "vanha jäsen". Täyttämällä sähköpostiosoitteesi 
-kyseisen sivun lomakkeeseen saat mailiisi linkin, jonka kautta pääset
-muokkaamaan tietojasi.
+valitsemalla kohdan "vanha jäsen". 
 
 Tervetuloa mukaan toimintaan! Katso tulevat tapahtumat sivuiltamme
 osoitteesta http://dot.ayy.fi.

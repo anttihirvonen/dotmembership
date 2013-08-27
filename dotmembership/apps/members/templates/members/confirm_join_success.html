@@ -1,8 +1,25 @@
 {% extends "base_content.html" %}
 {% load members_extra %}
-{% block title %}Hei {{ member.first_name }} – olet nyt jäsen!{% endblock %}
+{% block title %}Hei {{ member.first_name }}, tervetuloa jäseneksi!{% endblock %}
 {% block site_content %}
 <div class="row">
+    <div class="span12">
+        <h3>Maksa jäsenmaksu</h3>
+        <p>Tämä jäsenmaksu on määrätty vuoden {{ invoice.fee.year }} vuosikokouksessa
+        ja on voimassa {{ invoice.fee.start_date }} alkaen niin kauan, kunnes seuraavan
+        vuosikokouksen määräämä uusi jäsenmaksu astuu voimaan.</p>
+        <p>Mikäli maksoit jäsenmaksun tapahtumassa liittyessäsi käteisellä, voit ohittaa tämän vaiheen – rahastonhoitajamme kirjaa maksun maksetuksi automaattisesti.</p>
+        <p>Sinulle lähetetään vielä erillinen sähköposti kun maksu on kirjattu rekisteriimme, maksoitpa käteisellä tai pankkisiirrolla.</p>
+        <div class="row member-data">
+            {% print_row "Saaja" "DOT ry" %}
+            {% print_row "IBAN" "FI36 1309 3000 2025 49" %}
+            {% print_row "BIC" "NDEAFIHH" %}
+            {% print_row "Viitenumero" invoice.reference_number %}
+            {% print_row "Summa" invoice.amount " euroa" %}
+            {% print_row "" "<i>Mikäli maksat enemmän, tulkitaan ylimenevä osa lahjoitukseksi. :)</i>" %}
+            {% print_row "Eräpäivä" invoice.due_date|date:"d.m.Y" %}
+        </div>
+    </div>
     <div class="span12">
         <h3>Liityit jäseneksi seuraavin tiedoin</h3>
         <p>Alla on listattu ne tiedot, jotka syötit lomakkeeseen liittyessäsi jäseneksi. Mikäli tiedoissasi on virheitä, voit muuttaa niitä <a href="{{ member.edit_link }}">tämän sivun</a> kautta.</p>
@@ -15,20 +32,6 @@
                 {{ member|getfield:field|default:"(Tyhjä)" }}
             </div>
             {% endfor %}
-        </div>
-    </div>
-    <div class="span12">
-        <h3>Maksa vuoden {{ invoice.for_year }} jäsenmaksu</h3>
-        <p>Alla näet maksutiedot jäsenmaksun maksamista varten. Nämä tiedot on lähetetty myös sähköpostiisi. Mikäli maksoit jäsenmaksun käteisellä, voit ohittaa tämän vaiheen – rahastonhoitajamme kirjaa maksun maksetuksi automaattisesti.</p>
-        <p>Sinulle lähetetään vielä erillinen sähköposti kun maksu on kirjattu rekisteriimme, maksoitpa käteisellä tai pankkisiirrolla.</p>
-        <div class="row member-data">
-            {% print_row "Saaja" "DOT ry" %}
-            {% print_row "IBAN" "FI36 1309 3000 2025 49" %}
-            {% print_row "BIC" "NDEAFIHH" %}
-            {% print_row "Viitenumero" invoice.reference_number %}
-            {% print_row "Summa" invoice.amount " euroa" %}
-            {% print_row "" "<i>Mikäli maksat enemmän, tulkitaan ylimenevä osa lahjoitukseksi. :)</i>" %}
-            {% print_row "Eräpäivä" invoice.due_date %}
         </div>
     </div>
 </div>

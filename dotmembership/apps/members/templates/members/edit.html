@@ -7,9 +7,9 @@
     <div class="span12">
         <h3>Viimeisin jäsenmaksu</h3>
         {% if latest_invoice.paid %}
-            <p>Olet maksanut viimeisimmän jäsenmaksun (vuosi {{ latest_invoice.for_year }}) ja siis virallisesti DOTin jäsen. Tämä jäsenmaksu on voimassa niin kauan, kunnes vuosikokous päättää uuden jäsenmaksun suuruuden ja eräpäivän.</p>
+        <p>Olet maksanut tämänhetkisen jäsenmaksun ja siis virallisesti DOTin jäsen. Tämä jäsenmaksu on voimassa {{ latest_invoice.fee.start_date }} alkaen niin kauan, kunnes seuraavan vuosikokouksen päättämä uusi jäsenmaksukausi astuu voimaan.</p>
         {% else %}
-            <p>Et ole maksanut viimeisintä (vuoden {{ latest_invoice.for_year }}) jäsenmaksua. Maksutiedot löydät alta. Tämä jäsenmaksu on voimassa niin kauan, kunnes vuosikokous päättää uuden jäsenmaksun suuruuden ja eräpäivän.</p>
+            <p>Et ole maksanut tämänhetkistä jäsenmaksua. Maksutiedot löydät alta. Tämä jäsenmaksu on voimassa {{ latest_invoice.fee.start_date }} alkaen niin kauan, kunnes seuraavan vuosikokouksen päättämä uusi jäsenmaksukausi astuu voimaan.</p>
             <div class="row member-data">
                 {% print_row "Saaja" "DOT ry" %}
                 {% print_row "IBAN" "FI36 1309 3000 2025 49" %}
