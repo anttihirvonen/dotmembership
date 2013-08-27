@@ -1,7 +1,6 @@
 Hei {{ invoice.member.first_name }},
 
-jäsenmaksusi vuodelle {{ invoice.for_year }} on nyt
-kirjattu rekisteriimme. Kiitos!
+jäsenmaksusi viitenumerolla {{ invoice.reference_number }} (maksutapa: {{ invoice.get_payment_method_display }}) on nyt kirjattu rekisteriimme. Kiitos!
 
 --
 Digitaalisen median ammattiainekerho DOT ry
