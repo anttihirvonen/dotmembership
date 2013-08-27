@@ -91,7 +91,7 @@ class Invoice(models.Model):
     amount = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=_(u"summa"))
     # Automatically calculated at post_save based on the id
 
-    reference_number = models.IntegerField(_(u"viitenumero"), blank=True, null=True, editable=False)
+    reference_number = models.IntegerField(_(u"viitenumero"), blank=True, null=True)
 
     objects = PassThroughManager.for_queryset_class(InvoiceQuerySet)()
 
