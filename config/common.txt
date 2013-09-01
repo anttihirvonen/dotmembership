@@ -4,6 +4,7 @@ django-generic-confirmation==0.3
 django-reversion==1.6.3
 django-ajaxutils==0.2
 django-bootstrap-form==2.0.5
+django-mailer==0.1.0
 south==0.8.2
 -e hg+https://bitbucket.org/albertoconnor/django-mailman#egg=django_mailman
 yolk

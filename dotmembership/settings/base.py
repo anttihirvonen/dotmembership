@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'south',
     'generic_confirmation',
     'bootstrapform',
+    'mailer'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
