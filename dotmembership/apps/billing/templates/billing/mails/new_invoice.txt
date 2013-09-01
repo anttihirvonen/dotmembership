@@ -1,0 +1,19 @@
+Hei!
+
+Tässä tiedot vuoden {{ invoice.for_year }} vuosikokouksen määräämän jäsenmaksun 
+maksamista varten. Jäsenmaksu on voimassa päivästä {{ invoice.fee.start_date }} alkaen
+niin kauan, kunnen seuraavan vuosikokouksen asettama jäsenmaksukausi astuu voimaan.
+
+Saaja: DOT ry
+Tilinumero: FI36 1309 3000 2025 49
+Summa: {{ invoice.amount }} euroa (ylimenevä osa tulkitaan lahjoitukseksi)
+Viitenumero: {{ invoice.reference_number }}
+Eräpäivä: {{ invoice.due_date }}
+
+Muista käyttää maksaessasi viitenumeroa! Saat erillisen sähköpostin, 
+kun jäsenmaksusi on kirjattu rekisteriimme.
+
+Tervetuloa tapahtumiimme!
+
+--
+Digitaalisen median ammattiainekerho DOT ry

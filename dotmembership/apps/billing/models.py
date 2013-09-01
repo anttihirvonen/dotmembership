@@ -7,6 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils import timezone
+
+from mailer import send_mail as mailer_send_mail
 
 import reversion
 
@@ -70,7 +73,7 @@ class Invoice(models.Model):
                      ("sent", _(u"lähetetty (maksamatta)")),  # member has receiver invoice
                      ("paid", _(u"maksettu")),   # member has paid the invoide
                      ("due", _(u"erääntynyt")),  # the invoice wasn't paid before due date
-                     ("missed", _(u"välistä")))  # the invoice wasn't paid during year
+                     ("missed", _(u"välistä (jätetty maksamatta)")))  # the invoice wasn't paid during year
 
     PAYMENT = Choices(("cash", _(u"käteinen")), ("bank", _(u"pankki")))
 
@@ -82,7 +85,7 @@ class Invoice(models.Model):
     fee = models.ForeignKey(AnnualFee, null=True, default=None)
 
     # Dates
-    created = models.DateTimeField(default=datetime.now, verbose_name=_(u"luotu"))
+    created = models.DateTimeField(default=timezone.now, verbose_name=_(u"luotu"))
     due_date = models.DateField(verbose_name=_(u"eräpäivä"), blank=True)
     payment_date = models.DateField(verbose_name=_(u"maksupäivä"), blank=True, null=True)
 
@@ -107,6 +110,14 @@ class Invoice(models.Model):
         from django.core.exceptions import ValidationError
         if self.status == self.STATUS.paid and not (self.payment_date and self.payment_method):
             raise ValidationError(_(u"Syötä maksupäivä ja -tapa."))
+
+    def send_payment_mail(self):
+        subject = _(u"DOTin jäsenmaksutiedot vuodelle {0}".format(self.for_year))
+        body = render_to_string("billing/mails/new_invoice.txt",
+                {'invoice': self})
+
+        # use mailer to send mail
+        mailer_send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.member.email])
 
     def save(self, *args, **kwargs):
         # calculate due date
@@ -140,6 +151,42 @@ class Invoice(models.Model):
         get_latest_by = "created"
 
 reversion.register(Invoice)
+
+
+def generate_invoices_for_fee(fee, dry_run=False):
+    """
+    Uses given fee to generate invoices for all members.
+    Also sends mails about the new invoices.
+
+    If invoices for the given fee already exists, does nothing.
+    """
+    for member in Member.objects.all():
+        try:
+            invoice = Invoice.objects.get(member=member, amount=fee.amount, fee=fee)
+        except Invoice.DoesNotExist:
+            # Skip rest of the function if runnin' dry
+            if dry_run:
+                print u"Would generate invoice for member {0}, {1}".format(member.id, member.email)
+                continue
+
+            print u"Generating invoice for member {0}, {1}".format(member.id, member.email)
+            invoice = Invoice.objects.create(member=member, amount=fee.amount, fee=fee)
+            invoice.send_payment_mail()
+            invoice.status = Invoice.STATUS.sent
+            invoice.save()
+
+
+def archive_old_unpaid_invoices(fee, dry_run=False):
+    """
+    TODO: document / test
+    """
+    # go through invoices that have not been paid
+    # TODO: move the long query to InvoiceManager as a method
+    for invoice in Invoice.objects.exclude(fee=fee).exclude(status=Invoice.STATUS.paid).exclude(status=Invoice.STATUS.missed):
+        print u'Archivable Invoice found: status={0} fee={1} member={2}'.format(invoice.status, invoice.fee, invoice.member)
+        invoice.status = Invoice.STATUS.missed
+        if not dry_run:
+            invoice.save()
 
 
 @receiver(post_save, sender=Invoice)
