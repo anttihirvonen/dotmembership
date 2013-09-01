@@ -186,4 +186,5 @@ def edit(request, signed_id):
     return render(request, "members/edit.html", {"member": member,
                                                  "member_form": member_form,
                                                  "email_form": email_form,
-                                                 "latest_invoice": latest_invoice})
+                                                 "latest_invoice": latest_invoice,
+                                                 'invoices': member.invoices.all() })

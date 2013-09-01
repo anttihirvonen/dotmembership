@@ -20,6 +20,12 @@
                 {% print_row "Eräpäivä" latest_invoice.due_date %}
             </div>
         {% endif %}
+        <h3>Kaikki jäsenmaksut</h3>
+        <div class="row member-data">
+          {% for invoice in invoices %}
+            {% print_row invoice.for_year invoice.get_status_display %}
+          {% endfor %}
+        </div>
         <h3>Muokkaa sähköpostiosoitettasi</h3>
         <form action="" method="POST" class="form form-horizontal">
             {% csrf_token %}
