@@ -132,13 +132,13 @@ class Invoice(models.Model):
         if self.status == self.STATUS.paid:
             previous = Invoice.objects.get(pk=self.pk)
             if previous.status != self.STATUS.paid:
-                # status has changed – send email
+                # status has changed – send email after save
                 send_paid_mail = True
 
         super(Invoice, self).save(*args, **kwargs)
 
         if send_paid_mail:
-            subject = _(u"Jäsenmaksusi vuodelle {0} kirjattu".format(self.for_year))
+            subject = _(u"Jäsenmaksusi on kirjattu maksetuksi")
             body = render_to_string("billing/mails/invoice_paid.txt",
                                     {'invoice': self})
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [self.member.email])
@@ -158,7 +158,7 @@ def generate_invoices_for_fee(fee, dry_run=False):
     Uses given fee to generate invoices for all members.
     Also sends mails about the new invoices.
 
-    If invoices for the given fee already exists, does nothing.
+    If an invoice for the given fee already exists, does nothing.
     """
     for member in Member.objects.all():
         try:
@@ -192,10 +192,9 @@ def archive_old_unpaid_invoices(fee, dry_run=False):
 @receiver(post_save, sender=Invoice)
 def calculate_reference_number(sender, instance, created, **kwargs):
     """
-    Calculates reference number for
-    #TODO: this should be probably moved to save(), as it modifies
-    the instance
+    Calculates reference number for the invoice.
     """
+    # TODO: this should be moved to save() as the instance is modified
     if created:
         # One-liner to calculate reference number :)
         instance.reference_number = int(str(instance.id) + str(-sum(int(x) * [7, 3, 1][i % 3] for i, x in enumerate(str(instance.id)[::-1])) % 10))
