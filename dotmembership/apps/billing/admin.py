@@ -13,7 +13,7 @@ class InvoiceAdmin(reversion.VersionAdmin):
     fields = ('member', 'created', 'fee', 'due_date', 'amount', 'reference_number', 'status', 'payment_date',
             'payment_method')
     list_display = ("member", "status", "reference_number")
-    list_filter = ("status",)
+    list_filter = ("status", "fee")
     actions = None
 
 admin.site.register(Invoice, InvoiceAdmin)
