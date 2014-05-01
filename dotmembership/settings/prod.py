@@ -16,19 +16,19 @@ DATABASES = {
 }
 
 # Email
-SERVER_EMAIL = os.environ.get('SERVER_EMAIL')
+SERVER_EMAIL = os.environ['SERVER_EMAIL']
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST = os.environ['EMAIL_HOST']
 
 # Mailman list
-MAILMAN_LIST_NAME = os.environ.get('MAILMAN_LIST_NAME')
-MAILMAN_LIST_PASSWORD = os.environ.get('MAILMAN_LIST_PASSWORD')
-MAILMAN_LIST_EMAIL = os.environ.get("MAILMAN_LIST_EMAIL")
-MAILMAN_MAIN_URL = os.environ.get('MAILMAN_MAIN_URL')
-MAILMAN_ENCODING = os.environ.get('MAILMAN_ENCODING')
+MAILMAN_LIST_NAME = os.environ['MAILMAN_LIST_NAME']
+MAILMAN_LIST_PASSWORD = os.environ['MAILMAN_LIST_PASSWORD']
+MAILMAN_LIST_EMAIL = os.environ['MAILMAN_LIST_EMAIL']
+MAILMAN_MAIN_URL = os.environ['MAILMAN_MAIN_URL']
+MAILMAN_ENCODING = os.environ['MAILMAN_ENCODING']
 
-# Static files
-STATIC_ROOT = os.environ.get('STATIC_ROOT')
-STATIC_URL = os.environ.get('STATIC_URL')
+# Static files are collected and served locally
+STATIC_ROOT = os.environ['STATIC_ROOT']
+STATIC_URL = os.environ['STATIC_URL']
 
-SECRET_KET = os.environ.get('SECRET_KEY')
+SECRET_KET = os.environ['SECRET_KEY']
