@@ -1,6 +1,8 @@
 # Settings for production environment
 from .common import *
 
+import dj_database_url
+
 # Never run in debug mode
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -8,7 +10,10 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = ()
 MANAGERS = ()
 
-# TODO: databases config using dj-database-url
+# Load database configuration from DATABASE_URL
+DATABASES = {
+    'default': dj_database_url.config()
+}
 
 # Email
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL')
