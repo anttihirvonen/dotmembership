@@ -27,6 +27,9 @@ MAILMAN_LIST_EMAIL = os.environ['MAILMAN_LIST_EMAIL']
 MAILMAN_MAIN_URL = os.environ['MAILMAN_MAIN_URL']
 MAILMAN_ENCODING = os.environ['MAILMAN_ENCODING']
 
+USE_X_FORWARDED_HOST = True
+FORCE_SCRIPT_NAME = '/register'
+
 # Static files are collected and served locally
 STATIC_ROOT = os.environ['STATIC_ROOT']
 STATIC_URL = os.environ['STATIC_URL']
